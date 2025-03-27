@@ -1,18 +1,20 @@
 
 import React, { useState } from 'react';
 import { View, TextInput, Button, StyleSheet } from 'react-native';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../config/firebase';
 import { ThemedText } from '@/components/ThemedText';
+import { router } from 'expo-router';
 
-export default function LoginScreen({ navigation }) {
+export default function LoginScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleLogin = async () => {
     try {
-      await auth.signInWithEmailAndPassword(email, password);
-      navigation.navigate('(tabs)');
-    } catch (error) {
+      await signInWithEmailAndPassword(auth, email, password);
+      router.replace('/(tabs)');
+    } catch (error: any) {
       alert(error.message);
     }
   };
@@ -25,6 +27,8 @@ export default function LoginScreen({ navigation }) {
         value={email}
         onChangeText={setEmail}
         style={styles.input}
+        keyboardType="email-address"
+        autoCapitalize="none"
       />
       <TextInput
         placeholder="Password"
@@ -36,7 +40,7 @@ export default function LoginScreen({ navigation }) {
       <Button title="Login" onPress={handleLogin} />
       <Button 
         title="Register" 
-        onPress={() => navigation.navigate('register')} 
+        onPress={() => router.push('/auth/register')} 
       />
     </View>
   );

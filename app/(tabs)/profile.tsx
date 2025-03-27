@@ -1,17 +1,19 @@
 
 import React from 'react';
 import { View, Button, StyleSheet } from 'react-native';
+import { signOut } from 'firebase/auth';
 import { auth } from '../../config/firebase';
 import { ThemedText } from '@/components/ThemedText';
+import { router } from 'expo-router';
 
-export default function ProfileScreen({ navigation }) {
+export default function ProfileScreen() {
   const user = auth.currentUser;
 
   const handleLogout = async () => {
     try {
-      await auth.signOut();
-      navigation.navigate('login');
-    } catch (error) {
+      await signOut(auth);
+      router.replace('/auth/login');
+    } catch (error: any) {
       alert(error.message);
     }
   };

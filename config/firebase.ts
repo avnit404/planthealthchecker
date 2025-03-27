@@ -1,6 +1,6 @@
 
-import { initializeApp } from '@react-native-firebase/app';
-import { getAuth } from '@react-native-firebase/auth';
+import { initializeApp } from 'firebase/app';
+import { getAuth } from 'firebase/auth';
 
 const firebaseConfig = {
   apiKey: "YOUR_API_KEY",
@@ -8,8 +8,7 @@ const firebaseConfig = {
   projectId: "YOUR_PROJECT_ID",
   storageBucket: "YOUR_STORAGE_BUCKET",
   messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-  appId: "YOUR_APP_ID",
-  databaseURL: "YOUR_DATABASE_URL"
+  appId: "YOUR_APP_ID"
 };
 
 const app = initializeApp(firebaseConfig);
