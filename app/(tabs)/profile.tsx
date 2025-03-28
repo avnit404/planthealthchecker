@@ -49,11 +49,10 @@ export default function ProfileScreen() {
             style={styles.upgradeCard}
           >
             <MaterialCommunityIcons name="crown" size={30} color="#4CAF50" />
-            <View style={{ flex: 1 }}>
-              <ThemedText style={styles.upgradeTitle}>Premium Features</ThemedText>
-              <ThemedText style={styles.upgradeDetails}>Unlock all premium features</ThemedText>
+            <View>
+              <ThemedText style={styles.upgradeTitle}>Upgrade to Premium</ThemedText>
+              <ThemedText style={styles.upgradeDetails}>Get access to all features</ThemedText>
             </View>
-            <StripePayment />
           </Animated.View>
 
           <Animated.View 
