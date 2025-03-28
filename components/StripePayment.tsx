@@ -18,7 +18,7 @@ export const StripePayment = () => {
 
     setLoading(true);
     try {
-      const response = await fetch(`${process.env.EXPO_PUBLIC_APP_URL}/api/create-checkout-session`, {
+      const response = await fetch(`${process.env.EXPO_PUBLIC_APP_URL}/api/create-checkout-session/route`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
