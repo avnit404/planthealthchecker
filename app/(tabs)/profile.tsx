@@ -22,29 +22,30 @@ export default function ProfileScreen() {
     }
   };
 
-  const handleDeleteAccount = async () => {
-    try {
-      const user = auth.currentUser;
-      if (!user || !user.email) {
-        Alert.alert('Error', 'No user is currently signed in');
-        return;
-      }
-      Alert.alert(
-        'Delete Account',
-        'Are you sure you want to delete your account? This action cannot be undone.',
-        [
-          {
-            text: 'Cancel',
-            style: 'cancel',
-          },
-          {
-            text: 'Delete',
-            style: 'destructive',
-            onPress: async () => {
-              try {
-                await user.delete();
+  const handleDeleteAccount = () => {
+    const user = auth.currentUser;
+    if (!user || !user.email) {
+      Alert.alert('Error', 'No user is currently signed in');
+      return;
+    }
+
+    Alert.alert(
+      'Delete Account',
+      'Are you sure you want to delete your account? This action cannot be undone.',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Delete',
+          style: 'destructive',
+          onPress: () => {
+            user.delete()
+              .then(() => {
                 router.replace('/auth/register');
-              } catch (error: any) {
+              })
+              .catch((error) => {
                 if (error.code === 'auth/requires-recent-login') {
                   Alert.alert(
                     'Re-authentication Required',
@@ -52,9 +53,10 @@ export default function ProfileScreen() {
                     [
                       {
                         text: 'OK',
-                        onPress: async () => {
-                          await signOut(auth);
-                          router.replace('/auth/login');
+                        onPress: () => {
+                          signOut(auth)
+                            .then(() => router.replace('/auth/login'))
+                            .catch(err => Alert.alert('Error', err.message));
                         },
                       },
                     ]
@@ -62,14 +64,11 @@ export default function ProfileScreen() {
                 } else {
                   Alert.alert('Error', error.message);
                 }
-              }
-            },
+              });
           },
-        ]
-      );
-    } catch (error: any) {
-      Alert.alert('Error', error.message);
-    }
+        },
+      ]
+    );
   };
 
   return (
