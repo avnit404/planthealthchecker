@@ -70,22 +70,24 @@ export default function PlantHealthScreen() {
       });
 
       const data = await apiResponse.json();
-      if (data.result?.classification?.suggestions?.[0]) {
-        const suggestion = data.result.classification.suggestions[0];
-        const issues = data.result.disease?.suggestions || [];
+      if (data.result?.disease?.suggestions) {
+        const issues = data.result.disease.suggestions;
+        const isHealthy = data.result.is_healthy.binary;
+        const healthProbability = data.result.is_healthy.probability;
+        
         setHealth({
-          status: "Analysis Complete",
-          issues: [
-            `Identified as: ${suggestion.name}`,
-            ...issues.map(issue => issue.name)
-          ],
-          recommendations: [`Confidence: ${(suggestion.probability * 100).toFixed(1)}%`]
+          status: isHealthy ? "Plant is Healthy" : "Health Issues Detected",
+          issues: issues.map(issue => `${issue.name} (${(issue.probability * 100).toFixed(1)}%)`),
+          recommendations: [
+            `Overall Health: ${(healthProbability * 100).toFixed(1)}%`,
+            "Consult a plant specialist for treatment options"
+          ]
         });
       } else {
         setHealth({
           status: "Analysis Failed",
-          issues: ["Could not analyze the plant"],
-          recommendations: ["Please try again with a clearer image"]
+          issues: ["Could not analyze the plant health"],
+          recommendations: ["Please try with a different image"]
         });
       }
     } catch (error) {
