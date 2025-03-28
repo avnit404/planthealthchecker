@@ -67,7 +67,13 @@ export default function PlantHealthScreen() {
       });
 
       const data = await apiResponse.json();
-      setHealth(data.result);
+      if (data.result?.health_assessment) {
+        setHealth({
+          status: data.result.health_assessment.is_healthy ? "Healthy" : "Unhealthy",
+          issues: data.result.health_assessment.diseases.map(d => d.name),
+          recommendations: data.result.health_assessment.diseases.map(d => d.treatment?.solution || "No specific treatment available")
+        });
+      }
     }
   };
 

@@ -99,6 +99,9 @@ export default function PlantIdentificationScreen() {
               <ThemedText style={styles.resultTitle}>{result.plantName}</ThemedText>
               <ThemedText style={styles.resultDetail}>{result.scientificName}</ThemedText>
               <ThemedText style={styles.resultDescription}>{result.description}</ThemedText>
+              {result.similarImages && result.similarImages.map((img, index) => (
+                <Image key={index} source={{uri: img}} style={styles.similarImage} />
+              ))}
             </Animated.View>
           )}
         </Animated.View>
@@ -171,7 +174,18 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   resultDescription: {
-    fontSize: 13,
+    fontSize: 14,
     lineHeight: 20,
+  },
+  similarImage: {
+    width: width - 80,
+    height: 200,
+    borderRadius: 10,
+    marginTop: 10,
+  },
+  warning: {
+    color: '#f44336',
+    marginTop: 10,
+    fontSize: 14,
   },
 });
