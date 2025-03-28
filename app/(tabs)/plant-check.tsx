@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { ScrollView, Image, TouchableOpacity, StyleSheet, Dimensions, ActivityIndicator, View } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
@@ -74,7 +73,7 @@ export default function PlantHealthScreen() {
         const issues = data.result.disease.suggestions;
         const isHealthy = data.result.is_healthy.binary;
         const healthProbability = data.result.is_healthy.probability;
-        
+
         setHealth({
           status: isHealthy ? "Plant is Healthy" : "Health Issues Detected",
           issues: issues.map(issue => `${issue.name} (${(issue.probability * 100).toFixed(1)}%)`),
@@ -127,7 +126,7 @@ export default function PlantHealthScreen() {
           {health && health.issues && (
             <Animated.View entering={FadeInUp} style={styles.resultCard}>
               <ThemedText style={styles.resultTitle}>{health.status}</ThemedText>
-              
+
               {health.issues.map((issue, index) => (
                 <ThemedText key={index} style={styles.resultDetail}>{issue}</ThemedText>
               ))}
@@ -153,11 +152,12 @@ export default function PlantHealthScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#fff',
   },
   content: {
     flex: 1,
-    padding: 16,
-    backgroundColor: '#f7f9fc',
+    padding: 20,
+    minHeight: '100%',
   },
   header: {
     marginBottom: 24,

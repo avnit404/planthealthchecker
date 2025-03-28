@@ -156,15 +156,16 @@ export default function PlantIdentificationScreen() {
 
 const styles = StyleSheet.create({
   confidentBar: {
-    height: 8,
+    height: 6,
     backgroundColor: '#e1e5ee',
-    borderRadius: 4,
-    marginVertical: 8,
+    borderRadius: 3,
+    marginVertical: 16,
+    overflow: 'hidden',
   },
   confidentFill: {
     height: '100%',
     backgroundColor: '#4CAF50',
-    borderRadius: 4,
+    borderRadius: 3,
   },
   locationText: {
     fontSize: 14,
@@ -197,11 +198,12 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
+    backgroundColor: '#fff',
   },
   content: {
     flex: 1,
-    padding: 16,
-    backgroundColor: '#f7f9fc',
+    padding: 20,
+    minHeight: '100%',
   },
   header: {
     marginBottom: 24,
@@ -288,18 +290,6 @@ const styles = StyleSheet.create({
     height: 200,
     borderRadius: 20,
     marginTop: 16,
-  },
-  confidentBar: {
-    height: 6,
-    backgroundColor: '#e1e5ee',
-    borderRadius: 3,
-    marginVertical: 16,
-    overflow: 'hidden',
-  },
-  confidentFill: {
-    height: '100%',
-    backgroundColor: '#4CAF50',
-    borderRadius: 3,
   },
   similarImagesTitle: {
     fontSize: 18,
