@@ -37,7 +37,7 @@ export default function TabLayout() {
         name="plant-identification"
         options={{
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="leaf" size={28} color={color} />
+            <MaterialCommunityIcons name="image-search" size={28} color={color} />
           ),
         }}
       />
@@ -45,7 +45,7 @@ export default function TabLayout() {
         name="plant-check"
         options={{
           tabBarIcon: ({ color }) => (
-            <MaterialCommunityIcons name="heart-pulse" size={28} color={color} />
+            <MaterialCommunityIcons name="medical-bag" size={28} color={color} />
           ),
         }}
       />
