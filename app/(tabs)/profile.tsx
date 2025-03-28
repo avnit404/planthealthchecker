@@ -1,12 +1,12 @@
 
 import React from 'react';
-import { View, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { signOut } from 'firebase/auth';
 import { auth } from '../../config/firebase';
+import { router } from 'expo-router';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import { router } from 'expo-router';
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 
 const { width } = Dimensions.get('window');
@@ -30,29 +30,39 @@ export default function ProfileScreen() {
         style={styles.profileCard}
       >
         <View style={styles.avatarContainer}>
-          <MaterialCommunityIcons name="account-circle" size={80} color="#fff" />
+          <MaterialCommunityIcons name="account-circle" size={80} color="#4CAF50" />
           <ThemedText style={styles.userName}>{user?.email || 'User'}</ThemedText>
         </View>
 
         <View style={styles.infoSection}>
-          <View style={styles.subscriptionCard}>
-            <MaterialCommunityIcons name="star-circle" size={24} color="#FFD700" />
+          <Animated.View 
+            entering={FadeInDown.delay(100).springify()}
+            style={styles.subscriptionCard}
+          >
+            <MaterialCommunityIcons name="star-circle" size={24} color="#4CAF50" />
             <ThemedText style={styles.subscriptionTitle}>Free Plan</ThemedText>
             <ThemedText style={styles.subscriptionDetails}>Basic features included</ThemedText>
-          </View>
+          </Animated.View>
 
-          <TouchableOpacity style={styles.upgradeCard}>
-            <MaterialCommunityIcons name="crown" size={30} color="#FFD700" />
+          <Animated.View 
+            entering={FadeInDown.delay(200).springify()}
+            style={styles.upgradeCard}
+          >
+            <MaterialCommunityIcons name="crown" size={30} color="#4CAF50" />
             <View>
               <ThemedText style={styles.upgradeTitle}>Upgrade to Premium</ThemedText>
               <ThemedText style={styles.upgradeDetails}>Get access to all features</ThemedText>
             </View>
-          </TouchableOpacity>
+          </Animated.View>
 
-          <TouchableOpacity style={styles.logoutButton} onPress={handleLogout}>
-            <MaterialCommunityIcons name="logout" size={24} color="#fff" />
-            <ThemedText style={styles.logoutText}>Log Out</ThemedText>
-          </TouchableOpacity>
+          <Animated.View 
+            entering={FadeInDown.delay(300).springify()}
+          >
+            <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
+              <MaterialCommunityIcons name="logout" size={24} color="#f44336" />
+              <ThemedText style={styles.logoutText}>Logout</ThemedText>
+            </TouchableOpacity>
+          </Animated.View>
         </View>
       </Animated.View>
     </ThemedView>
@@ -63,14 +73,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: '#0a0a0a',
   },
   profileCard: {
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    backgroundColor: 'rgba(255, 255, 255, 0.05)',
     borderRadius: 25,
     padding: 20,
-    backdropFilter: 'blur(10px)',
-    boxShadow: '0 8px 32px 0 rgba(31, 38, 135, 0.37)',
+    marginTop: 20,
   },
   avatarContainer: {
     alignItems: 'center',
@@ -79,15 +87,13 @@ const styles = StyleSheet.create({
   userName: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#fff',
     marginTop: 10,
-    textShadow: '0 0 10px rgba(255,255,255,0.3)',
   },
   infoSection: {
     gap: 20,
   },
   subscriptionCard: {
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    backgroundColor: 'rgba(255, 255, 255, 0.03)',
     borderRadius: 15,
     padding: 20,
     alignItems: 'center',
@@ -95,15 +101,14 @@ const styles = StyleSheet.create({
   subscriptionTitle: {
     fontSize: 20,
     fontWeight: 'bold',
-    color: '#fff',
     marginTop: 10,
   },
   subscriptionDetails: {
-    color: 'rgba(255, 255, 255, 0.7)',
+    opacity: 0.7,
     marginTop: 5,
   },
   upgradeCard: {
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    backgroundColor: 'rgba(255, 255, 255, 0.03)',
     borderRadius: 15,
     padding: 20,
     flexDirection: 'row',
@@ -113,10 +118,10 @@ const styles = StyleSheet.create({
   upgradeTitle: {
     fontSize: 18,
     fontWeight: 'bold',
-    color: '#FFD700',
+    color: '#4CAF50',
   },
   upgradeDetails: {
-    color: 'rgba(255, 255, 255, 0.7)',
+    opacity: 0.7,
     fontSize: 14,
   },
   logoutButton: {
@@ -129,8 +134,6 @@ const styles = StyleSheet.create({
     gap: 10,
   },
   logoutText: {
-    color: '#fff',
     fontSize: 16,
-    fontWeight: 'bold',
-  },
+  }
 });
