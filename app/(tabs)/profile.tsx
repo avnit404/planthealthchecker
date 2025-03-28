@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity, Dimensions, ScrollView } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Dimensions, ScrollView, Alert } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { signOut } from 'firebase/auth';
 import { auth } from '../../config/firebase';
@@ -25,21 +25,51 @@ export default function ProfileScreen() {
   const handleDeleteAccount = async () => {
     try {
       const user = auth.currentUser;
-      if (!user) return;
-
-      const confirmDelete = confirm('Are you sure you want to delete your account? This action cannot be undone.');
-      if (!confirmDelete) return;
-
-      await user.delete();
-      router.replace('/auth/register');
-    } catch (error: any) {
-      if (error.code === 'auth/requires-recent-login') {
-        alert('Please log out and log back in to delete your account');
-        await signOut(auth);
-        router.replace('/auth/login');
-      } else {
-        alert(error.message);
+      if (!user) {
+        Alert.alert('Error', 'No user is currently signed in');
+        return;
       }
+
+      Alert.alert(
+        'Delete Account',
+        'Are you sure you want to delete your account? This action cannot be undone.',
+        [
+          {
+            text: 'Cancel',
+            style: 'cancel',
+          },
+          {
+            text: 'Delete',
+            style: 'destructive',
+            onPress: async () => {
+              try {
+                await user.delete();
+                router.replace('/auth/register');
+              } catch (error: any) {
+                if (error.code === 'auth/requires-recent-login') {
+                  Alert.alert(
+                    'Re-authentication Required',
+                    'Please log out and log back in to delete your account',
+                    [
+                      {
+                        text: 'OK',
+                        onPress: async () => {
+                          await signOut(auth);
+                          router.replace('/auth/login');
+                        },
+                      },
+                    ]
+                  );
+                } else {
+                  Alert.alert('Error', error.message);
+                }
+              }
+            },
+          },
+        ]
+      );
+    } catch (error: any) {
+      Alert.alert('Error', error.message);
     }
   };
 
