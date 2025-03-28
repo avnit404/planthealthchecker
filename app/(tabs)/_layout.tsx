@@ -1,7 +1,8 @@
+
 import { Tabs } from 'expo-router';
 import { Platform } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { Colors } from '../../constants/Colors'; //This line is modified
+import { Colors } from '../../constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import HapticTab from '@/components/HapticTab';
 import TabBarBackground from '@/components/ui/TabBarBackground';
@@ -46,6 +47,14 @@ export default function TabLayout() {
         options={{
           tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="medical-bag" size={28} color={color} />
+          ),
+        }}
+      />
+      <Tabs.Screen 
+        name="profile"
+        options={{
+          tabBarIcon: ({ color }) => (
+            <MaterialCommunityIcons name="account" size={28} color={color} />
           ),
         }}
       />
