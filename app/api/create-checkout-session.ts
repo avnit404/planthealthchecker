@@ -1,14 +1,6 @@
-
 import { stripe } from '../../config/stripe';
 
-export default async function handler(req: Request) {
-  if (req.method !== 'POST') {
-    return new Response(JSON.stringify({ error: 'Method not allowed' }), {
-      status: 405,
-      headers: { 'Content-Type': 'application/json' }
-    });
-  }
-
+export async function POST(req: Request) {
   try {
     const { priceId, userId } = await req.json();
 
@@ -18,21 +10,15 @@ export default async function handler(req: Request) {
         price: priceId,
         quantity: 1,
       }],
-      success_url: `${process.env.EXPO_PUBLIC_APP_URL}/(tabs)/profile?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.EXPO_PUBLIC_APP_URL}/(tabs)/profile`,
-      client_reference_id: userId,
+      success_url: `${process.env.EXPO_PUBLIC_APP_URL}/profile?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${process.env.EXPO_PUBLIC_APP_URL}/profile`,
       metadata: {
-        userId: userId,
+        userId,
       },
     });
 
-    return new Response(JSON.stringify({ sessionId: session.id }), {
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return Response.json({ sessionId: session.id });
   } catch (error: any) {
-    return new Response(JSON.stringify({ error: error.message }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' },
-    });
+    return Response.json({ error: error.message }, { status: 500 });
   }
 }
