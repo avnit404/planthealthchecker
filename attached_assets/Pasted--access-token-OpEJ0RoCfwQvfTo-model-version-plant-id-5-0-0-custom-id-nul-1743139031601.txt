@@ -1,0 +1,183 @@
+{
+    "access_token": "OpEJ0RoCfwQvfTo",
+    "model_version": "plant_id:5.0.0",
+    "custom_id": null,
+    "input": {
+        "latitude": 49.207,
+        "longitude": 16.608,
+        "similar_images": true,
+        "health": "only",
+        "images": [
+            "https://plant.id/media/imgs/3657a08357e9481e805cfca0c9149a13.jpg"
+        ],
+        "datetime": "2025-03-28T05:16:33.525060+00:00"
+    },
+    "result": {
+        "disease": {
+            "suggestions": [
+                {
+                    "id": "7f22438065988f95",
+                    "name": "Fungi",
+                    "probability": 0.99,
+                    "similar_images": [
+                        {
+                            "id": "09ff6ccf4d5cdd14f85f0875c55b205750e58553",
+                            "url": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/5/09f/f6ccf4d5cdd14f85f0875c55b205750e58553.jpg",
+                            "license_name": "CC BY-NC-SA 4.0",
+                            "license_url": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+                            "citation": "FlowerChecker s.r.o.",
+                            "similarity": 0.214,
+                            "url_small": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/5/09f/f6ccf4d5cdd14f85f0875c55b205750e58553.small.jpg"
+                        },
+                        {
+                            "id": "d1e4558cdd04b90e3ff8ea4b05ee4cbde0519dee",
+                            "url": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/5/d1e/4558cdd04b90e3ff8ea4b05ee4cbde0519dee.jpeg",
+                            "license_name": "CC BY 3.0",
+                            "license_url": "https://creativecommons.org/licenses/by/3.0/",
+                            "citation": "Mary Ann Hansen, Virginia Polytechnic Institute and State University, Bugwood.org ",
+                            "similarity": 0.202,
+                            "url_small": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/5/d1e/4558cdd04b90e3ff8ea4b05ee4cbde0519dee.small.jpeg"
+                        }
+                    ],
+                    "redundant": true,
+                    "details": {
+                        "language": "en",
+                        "entity_id": "7f22438065988f95"
+                    }
+                },
+                {
+                    "id": "ed54e54ff772db0b",
+                    "name": "black spot",
+                    "probability": 0.8251,
+                    "similar_images": [
+                        {
+                            "id": "fc8c98f20b8ee6c612dd11da25127810f77138ab",
+                            "url": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/5/fc8/c98f20b8ee6c612dd11da25127810f77138ab.jpeg",
+                            "license_name": "CC BY 3.0",
+                            "license_url": "https://creativecommons.org/licenses/by/3.0/",
+                            "citation": "Florida Division of Plant Industry , Florida Department of Agriculture and Consumer Services, Bugwood.org ",
+                            "similarity": 0.154,
+                            "url_small": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/5/fc8/c98f20b8ee6c612dd11da25127810f77138ab.small.jpeg"
+                        },
+                        {
+                            "id": "78bd096de8bbed82448cac9911b796424e20afb7",
+                            "url": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/5/78b/d096de8bbed82448cac9911b796424e20afb7.jpeg",
+                            "license_name": "CC BY 3.0",
+                            "license_url": "https://creativecommons.org/licenses/by/3.0/",
+                            "citation": "Dr Parthasarathy Seethapathy, Amrita School of Agricultural Sciences, Amrita Vishwa Vidyapeetham, Bugwood.org ",
+                            "similarity": 0.143,
+                            "url_small": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/5/78b/d096de8bbed82448cac9911b796424e20afb7.small.jpeg"
+                        }
+                    ],
+                    "details": {
+                        "language": "en",
+                        "entity_id": "ed54e54ff772db0b"
+                    }
+                },
+                {
+                    "id": "9c63240ac34d8dd3",
+                    "name": "rust",
+                    "probability": 0.014,
+                    "similar_images": [
+                        {
+                            "id": "c1a61c32453126b859e585d8df2f1bc8ad7d37fb",
+                            "url": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/5/c1a/61c32453126b859e585d8df2f1bc8ad7d37fb.jpg",
+                            "license_name": "CC BY-NC-SA 4.0",
+                            "license_url": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+                            "citation": "FlowerChecker s.r.o.",
+                            "similarity": 0.185,
+                            "url_small": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/5/c1a/61c32453126b859e585d8df2f1bc8ad7d37fb.small.jpg"
+                        },
+                        {
+                            "id": "8de40dd60a3d2ed8a0ee902e0c0dde37b289bc90",
+                            "url": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/5/8de/40dd60a3d2ed8a0ee902e0c0dde37b289bc90.jpg",
+                            "license_name": "CC BY-NC-SA 4.0",
+                            "license_url": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+                            "citation": "FlowerChecker s.r.o.",
+                            "similarity": 0.178,
+                            "url_small": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/5/8de/40dd60a3d2ed8a0ee902e0c0dde37b289bc90.small.jpg"
+                        }
+                    ],
+                    "details": {
+                        "language": "en",
+                        "entity_id": "9c63240ac34d8dd3"
+                    }
+                },
+                {
+                    "id": "d24ebab7c0155e4b",
+                    "name": "Animalia",
+                    "probability": 0.012,
+                    "similar_images": [
+                        {
+                            "id": "e3094413684a1f10e1946fdd5a8613ad993c8063",
+                            "url": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/5/e30/94413684a1f10e1946fdd5a8613ad993c8063.jpg",
+                            "license_name": "CC BY-NC-SA 4.0",
+                            "license_url": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+                            "citation": "FlowerChecker s.r.o.",
+                            "similarity": 0.215,
+                            "url_small": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/5/e30/94413684a1f10e1946fdd5a8613ad993c8063.small.jpg"
+                        },
+                        {
+                            "id": "d0f85dc17cd2f4fffc21ee6e504b5748cbc0f076",
+                            "url": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/5/d0f/85dc17cd2f4fffc21ee6e504b5748cbc0f076.jpg",
+                            "license_name": "CC BY-NC-SA 4.0",
+                            "license_url": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+                            "citation": "FlowerChecker s.r.o.",
+                            "similarity": 0.214,
+                            "url_small": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/5/d0f/85dc17cd2f4fffc21ee6e504b5748cbc0f076.small.jpg"
+                        }
+                    ],
+                    "details": {
+                        "language": "en",
+                        "entity_id": "d24ebab7c0155e4b"
+                    }
+                },
+                {
+                    "id": "fbcd86da93ab1266",
+                    "name": "powdery mildew",
+                    "probability": 0.0104,
+                    "similar_images": [
+                        {
+                            "id": "eb69b0fce0e4c7451f1ebe3f78bca03e286d79ba",
+                            "url": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/5/eb6/9b0fce0e4c7451f1ebe3f78bca03e286d79ba.jpg",
+                            "license_name": "CC BY-NC-SA 4.0",
+                            "license_url": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+                            "citation": "FlowerChecker s.r.o.",
+                            "similarity": 0.236,
+                            "url_small": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/5/eb6/9b0fce0e4c7451f1ebe3f78bca03e286d79ba.small.jpg"
+                        },
+                        {
+                            "id": "014a2819193604f40e6a1fff049ec4c79547a199",
+                            "url": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/5/014/a2819193604f40e6a1fff049ec4c79547a199.jpg",
+                            "license_name": "CC BY-NC-SA 4.0",
+                            "license_url": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+                            "citation": "FlowerChecker s.r.o.",
+                            "similarity": 0.211,
+                            "url_small": "https://plant-id.ams3.cdn.digitaloceanspaces.com/similar_images/5/014/a2819193604f40e6a1fff049ec4c79547a199.small.jpg"
+                        }
+                    ],
+                    "details": {
+                        "language": "en",
+                        "entity_id": "fbcd86da93ab1266"
+                    }
+                }
+            ],
+            "question": null
+        },
+        "is_healthy": {
+            "binary": false,
+            "threshold": 0.525,
+            "probability": 0.15444177389144897
+        },
+        "is_plant": {
+            "probability": 0.9981211,
+            "threshold": 0.5,
+            "binary": true
+        }
+    },
+    "status": "COMPLETED",
+    "sla_compliant_client": true,
+    "sla_compliant_system": true,
+    "created": 1743138993.52506,
+    "completed": 1743138993.891174
+}
