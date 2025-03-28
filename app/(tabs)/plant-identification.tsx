@@ -155,16 +155,25 @@ export default function PlantIdentificationScreen() {
 }
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#FFDDAB',
+  },
+  content: {
+    flex: 1,
+    padding: 20,
+    backgroundColor:"#FFDDAB",
+  },
   confidentBar: {
     height: 6,
-    backgroundColor: '#e1e5ee',
+    backgroundColor: '#FFDDAB',
     borderRadius: 3,
     marginVertical: 16,
     overflow: 'hidden',
   },
   confidentFill: {
     height: '100%',
-    backgroundColor: '#4CAF50',
+    backgroundColor: '#945034',
     borderRadius: 3,
   },
   locationText: {
@@ -196,15 +205,6 @@ const styles = StyleSheet.create({
     color: '#666d87',
     marginTop: 2,
   },
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-  content: {
-    flex: 1,
-    padding: 20,
-    minHeight: '100%',
-  },
   header: {
     marginBottom: 24,
     alignItems: 'center',
@@ -213,12 +213,12 @@ const styles = StyleSheet.create({
     fontSize: 32,
     fontWeight: '800',
     marginBottom: 8,
-    color: '#1a2138',
+    color: '#945034',
     textAlign: 'center',
   },
   subtitle: {
     fontSize: 16,
-    color: '#666d87',
+    color: '#945034',
     textAlign: 'center',
     maxWidth: '80%',
   },
@@ -272,7 +272,7 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: '800',
     marginBottom: 12,
-    color: '#1a2138',
+    color: '#945034',
   },
   resultDetail: {
     fontSize: 18,
@@ -290,18 +290,5 @@ const styles = StyleSheet.create({
     height: 200,
     borderRadius: 20,
     marginTop: 16,
-  },
-  similarImagesTitle: {
-    fontSize: 18,
-    fontWeight: '600',
-    color: '#1a2138',
-    marginTop: 24,
-    marginBottom: 16,
-  },
-  citationText: {
-    fontSize: 12,
-    color: '#8892a8',
-    marginTop: 8,
-    fontStyle: 'italic',
   },
 });

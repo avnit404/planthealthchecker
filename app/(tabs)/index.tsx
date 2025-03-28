@@ -1,74 +1,283 @@
-import { Image, StyleSheet, Platform } from 'react-native';
-
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
+import React, { useState } from 'react';
+import { 
+  ScrollView, 
+  Image, 
+  TouchableOpacity, 
+  StyleSheet, 
+  Dimensions, 
+  ActivityIndicator, 
+  View, 
+  Alert 
+} from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import Animated, { 
+  FadeInDown, 
+  FadeInUp, 
+  withSpring, 
+  useSharedValue, 
+  useAnimatedStyle, 
+  withTiming 
+} from 'react-native-reanimated';
 
-export default function HomeScreen() {
+const { width } = Dimensions.get('window');
+
+export default function PlantHealthScreen() {
+  const [image, setImage] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [health, setHealth] = useState(null);
+  const buttonScale = useSharedValue(1);
+  const progressWidth = useSharedValue(0);
+
+  const animatedButtonStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: buttonScale.value }],
+  }));
+
+  const animatedProgressStyle = useAnimatedStyle(() => ({
+    width: withTiming(progressWidth.value, { duration: 500 }),
+  }));
+
+  const handlePressIn = () => {
+    buttonScale.value = withSpring(0.95);
+  };
+
+  const handlePressOut = () => {
+    buttonScale.value = withSpring(1);
+  };
+
+  const pickImage = async () => {
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      const imageUri = result.assets[0].uri;
+      setImage(imageUri);
+      analyzeHealth(imageUri);
+    }
+  };
+
+  const analyzeHealth = async (imageUri) => {
+    setLoading(true);
+    try {
+      const response = await fetch(imageUri);
+      const blob = await response.blob();
+      const base64Image = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result.split(',')[1]);
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
+      });
+
+      const apiResponse = await fetch('https://plant.id/api/v3/health_assessment', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Api-Key': 'CVLs8IAfB4VSO4gpLXqX625SutHekQj6neZROnk9jLpupOljC8',
+        },
+        body: JSON.stringify({
+          images: [base64Image],
+          latitude: 49.207,
+          longitude: 16.608,
+          similar_images: true,
+        }),
+      });
+
+      const data = await apiResponse.json();
+      if (data.result?.disease?.suggestions) {
+        const issues = data.result.disease.suggestions;
+        const isHealthy = data.result.is_healthy.binary;
+        const healthProbability = data.result.is_healthy.probability;
+        progressWidth.value = healthProbability * (width - 96);
+
+        setHealth({
+          status: isHealthy ? "Plant is Healthy" : "Health Issues Detected",
+          issues: issues.map(issue => `${issue.name} (${(issue.probability * 100).toFixed(1)}%)`),
+          confidence: healthProbability,
+          recommendations: [
+            `Overall Health: ${(healthProbability * 100).toFixed(1)}%`,
+            "Consult a plant specialist for treatment options"
+          ],
+        });
+      } else {
+        setHealth({
+          status: "Analysis Failed",
+          issues: ["Could not analyze the plant health"],
+          recommendations: ["Please try with a different image"],
+        });
+      }
+    } catch (error) {
+      Alert.alert('Error', 'Error analyzing plant health: ' + error.message);
+      setHealth({
+        status: "Error",
+        issues: ["Error analyzing plant"],
+        recommendations: ["Please try again"],
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome to Expo on Replit!</ThemedText>
-        <HelloWave />
+    <ScrollView style={styles.container}>
+      <ThemedView style={styles.wrapper}>
+        {/* Header */}
+        <View style={styles.header}>
+          <ThemedText style={styles.title}>Plant Health Check</ThemedText>
+          <ThemedText style={styles.subtitle}>
+            Upload a photo to check plant health
+          </ThemedText>
+        </View>
+
+        {/* Main Content */}
+        <View style={styles.main}>
+          <Animated.View 
+            entering={FadeInDown.delay(200)} 
+            style={[styles.uploadContainer, animatedButtonStyle]}
+          >
+            <TouchableOpacity 
+              onPressIn={handlePressIn} 
+              onPressOut={handlePressOut} 
+              onPress={pickImage} 
+              activeOpacity={0.8}
+              style={styles.uploadButton}
+            >
+              <MaterialCommunityIcons name="upload" size={40} color="#fff" />
+              <ThemedText style={styles.uploadText}>Select Photo</ThemedText>
+            </TouchableOpacity>
+            {image && (
+              <Image source={{ uri: image }} style={styles.previewImage} />
+            )}
+          </Animated.View>
+
+          {loading && (
+            <ActivityIndicator size="large" color="#4CAF50" style={styles.loader} />
+          )}
+
+          {health && (
+            <Animated.View entering={FadeInUp} style={styles.resultContainer}>
+              <ThemedText style={styles.healthStatus}>{health.status}</ThemedText>
+              {health.issues.map((issue, index) => (
+                <ThemedText key={index} style={styles.issueText}>{issue}</ThemedText>
+              ))}
+              <View style={styles.progressWrapper}>
+                <Animated.View style={[styles.progressBar, animatedProgressStyle]} />
+              </View>
+              {health.recommendations.map((rec, index) => (
+                <ThemedText key={index} style={styles.recommendationText}>
+                  {rec}
+                </ThemedText>
+              ))}
+            </Animated.View>
+          )}
+        </View>
       </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12'
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
-  titleContainer: {
+  container: {
+    flex: 1,
+    backgroundColor: '#FFDDAB',
+  },
+  wrapper: {
+    flex: 1,
+    padding: 20,
+    backgroundColor:"#FFDDAB",
+  },
+  header: {
+    paddingVertical: 20,
+    borderBottomWidth: 1,
+    borderBottomColor: '#ccc',
+    marginBottom: 20,
+    alignItems: 'center',
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: '700',
+    color: '#945034',
+    marginBottom: 10,
+  },
+  subtitle: {
+    fontSize: 16,
+    color: '#945034',
+  },
+  main: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  uploadContainer: {
+    width: '100%',
+    backgroundColor: '#5F8B4C',
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 8,
+    padding: 20,
+    alignItems: 'center',
+    marginBottom: 20,
+  },
+  uploadButton: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: 8,
   },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
+  uploadText: {
+    fontSize: 18,
+    color: '#fff',
+    marginLeft: 10,
+    fontWeight: '500',
   },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  previewImage: {
+    width: '100%',
+    height: 200,
+    resizeMode: 'cover',
+    borderRadius: 8,
+    marginTop: 20,
+  },
+  loader: {
+    marginVertical: 20,
+  },
+  resultContainer: {
+    width: '100%',
+    backgroundColor: '#fff',
+    borderWidth: 1,
+    borderColor: '#ddd',
+    borderRadius: 8,
+    padding: 20,
+    alignItems: 'center',
+  },
+  healthStatus: {
+    fontSize: 24,
+    fontWeight: '700',
+    color: '#945034',
+    marginBottom: 10,
+  },
+  issueText: {
+    fontSize: 16,
+    color: '#666',
+    marginBottom: 5,
+  },
+  progressWrapper: {
+    width: '100%',
+    height: 10,
+    backgroundColor: '#FFDDAB',
+    borderRadius: 5,
+    overflow: 'hidden',
+    marginVertical: 15,
+  },
+  progressBar: {
+    height: '100%',
+    backgroundColor: '#945034',
+  },
+  recommendationText: {
+    fontSize: 16,
+    color: '#333',
+    marginTop: 10,
+    textAlign: 'center',
   },
 });

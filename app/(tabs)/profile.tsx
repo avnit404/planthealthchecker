@@ -73,9 +73,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
+    backgroundColor: '#FFDDAB',
   },
   profileCard: {
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
+    backgroundColor: '#27391C',
     borderRadius: 25,
     padding: 20,
     marginTop: 20,
@@ -93,7 +94,7 @@ const styles = StyleSheet.create({
     gap: 20,
   },
   subscriptionCard: {
-    backgroundColor: 'rgba(255, 255, 255, 0.03)',
+    backgroundColor: '#A08963',
     borderRadius: 15,
     padding: 20,
     alignItems: 'center',
@@ -108,7 +109,7 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   upgradeCard: {
-    backgroundColor: 'rgba(255, 255, 255, 0.03)',
+    backgroundColor: '#A08963',
     borderRadius: 15,
     padding: 20,
     flexDirection: 'row',
@@ -125,7 +126,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
   },
   logoutButton: {
-    backgroundColor: 'rgba(244, 67, 54, 0.1)',
+    backgroundColor: '#7D0A0A',
     borderRadius: 15,
     padding: 15,
     flexDirection: 'row',
