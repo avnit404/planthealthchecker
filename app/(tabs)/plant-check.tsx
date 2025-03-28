@@ -57,7 +57,7 @@ export default function PlantHealthScreen() {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Api-Key': process.env.EXPO_PUBLIC_PLANT_ID_API_KEY,
+          'Api-Key': 'CVLs8IAfB4VSO4gpLXqX625SutHekQj6neZROnk9jLpupOljC8',
         },
         body: JSON.stringify({
           images: [base64Image],
