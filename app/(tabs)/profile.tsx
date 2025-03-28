@@ -48,11 +48,29 @@ export default function ProfileScreen() {
             entering={FadeInDown.delay(200).springify()}
             style={styles.upgradeCard}
           >
-            <MaterialCommunityIcons name="crown" size={30} color="#4CAF50" />
-            <View>
-              <ThemedText style={styles.upgradeTitle}>Upgrade to Premium</ThemedText>
-              <ThemedText style={styles.upgradeDetails}>Get access to all features</ThemedText>
-            </View>
+            <TouchableOpacity 
+              onPress={async () => {
+                try {
+                  await initializePurchases();
+                  const products = await getProducts();
+                  if (products.length > 0) {
+                    const purchase = await purchasePremium();
+                    if (purchase) {
+                      Alert.alert('Success', 'Premium plan activated!');
+                    }
+                  }
+                } catch (error) {
+                  Alert.alert('Error', 'Failed to process purchase');
+                }
+              }}
+              style={styles.upgradeButton}
+            >
+              <MaterialCommunityIcons name="crown" size={30} color="#4CAF50" />
+              <View>
+                <ThemedText style={styles.upgradeTitle}>Upgrade to Premium</ThemedText>
+                <ThemedText style={styles.upgradeDetails}>Get access to all features</ThemedText>
+              </View>
+            </TouchableOpacity>
           </Animated.View>
 
           <Animated.View 
