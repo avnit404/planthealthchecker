@@ -1,9 +1,14 @@
+
 import { stripe } from '../../config/stripe';
+
+export default function Page() {
+  return null;
+}
 
 export async function POST(req: Request) {
   try {
     const { priceId, userId } = await req.json();
-
+    
     const session = await stripe.checkout.sessions.create({
       mode: 'subscription',
       line_items: [{
