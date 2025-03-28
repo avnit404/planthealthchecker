@@ -45,7 +45,11 @@ export default function ProfileScreen() {
 
   return (
     <ThemedView style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContent}>
+      <ScrollView 
+        contentContainerStyle={styles.scrollContent}
+        style={styles.hideScrollbar}
+        showsVerticalScrollIndicator={false}
+      >
         <Animated.View 
           entering={FadeInDown.springify()}
           style={styles.profileCard}
@@ -117,6 +121,9 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
   scrollContent: {
     flexGrow: 1,
+  },
+  hideScrollbar: {
+    scrollbarWidth: 'none',
   },
   deleteButton: {
     marginTop: 10,
