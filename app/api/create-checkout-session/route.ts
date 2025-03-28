@@ -1,7 +1,7 @@
 
 import { stripe } from '../../../config/stripe';
 
-export async function POST(req: Request) {
+export default async function handler(req: Request) {
   if (!process.env.EXPO_PUBLIC_STRIPE_SECRET_KEY) {
     return Response.json({ error: 'Missing Stripe secret key' }, { status: 500 });
   }
@@ -27,5 +27,3 @@ export async function POST(req: Request) {
     return Response.json({ error: error.message }, { status: 500 });
   }
 }
-
-export const runtime = 'edge';
