@@ -1,5 +1,5 @@
 
-import { initializeApp } from 'firebase/app';
+import { initializeApp, getApps, getApp } from 'firebase/auth';
 import { getAuth } from 'firebase/auth';
 
 const firebaseConfig = {
@@ -11,5 +11,8 @@ const firebaseConfig = {
   appId: process.env.EXPO_PUBLIC_FIREBASE_APP_ID
 };
 
-const app = initializeApp(firebaseConfig);
-export const auth = getAuth(app);
+// Initialize Firebase only if it hasn't been initialized already
+const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApp();
+const auth = getAuth(app);
+
+export { app, auth };

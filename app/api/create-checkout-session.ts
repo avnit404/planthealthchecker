@@ -1,14 +1,13 @@
 
 import { stripe } from '../../config/stripe';
-import { NextResponse } from 'next/server';
+import { Response } from 'express';
 
-export async function POST(req: Request) {
+export default async function handler(req: Request) {
   try {
     const { priceId, userId } = await req.json();
 
     const session = await stripe.checkout.sessions.create({
       mode: 'subscription',
-      payment_method_types: ['card'],
       line_items: [{
         price: priceId,
         quantity: 1,
@@ -21,8 +20,13 @@ export async function POST(req: Request) {
       },
     });
 
-    return NextResponse.json({ sessionId: session.id });
+    return new Response(JSON.stringify({ sessionId: session.id }), {
+      headers: { 'Content-Type': 'application/json' },
+    });
   } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 }
