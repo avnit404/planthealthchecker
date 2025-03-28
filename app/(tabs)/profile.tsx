@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity, Dimensions, ScrollView, Alert } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import { signOut } from 'firebase/auth';
+import { signOut, deleteUser, EmailAuthProvider, reauthenticateWithCredential } from 'firebase/auth';
 import { auth } from '../../config/firebase';
 import { router } from 'expo-router';
 import { ThemedText } from '@/components/ThemedText';
@@ -25,7 +25,7 @@ export default function ProfileScreen() {
   const handleDeleteAccount = async () => {
     try {
       const user = auth.currentUser;
-      if (!user) {
+      if (!user || !user.email) {
         Alert.alert('Error', 'No user is currently signed in');
         return;
       }
