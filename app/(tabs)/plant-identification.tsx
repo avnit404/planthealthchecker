@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ScrollView, Image, TouchableOpacity, StyleSheet, Dimensions, ActivityIndicator } from 'react-native';
+import { ScrollView, Image, TouchableOpacity, StyleSheet, Dimensions, ActivityIndicator, View } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
@@ -116,7 +116,7 @@ export default function PlantIdentificationScreen() {
             <Animated.View entering={FadeInUp} style={styles.resultCard}>
               <ThemedText style={styles.resultTitle}>{result.plantName}</ThemedText>
               <ThemedText style={styles.resultDetail}>{result.scientificName}</ThemedText>
-              
+
               <View style={styles.confidentBar}>
                 <Animated.View 
                   style={[styles.confidentFill, { width: `${result.probability * 100}%` }]} 
@@ -125,11 +125,11 @@ export default function PlantIdentificationScreen() {
               <ThemedText style={styles.resultDescription}>
                 Confidence: {(result.probability * 100).toFixed(1)}%
               </ThemedText>
-              
+
               <ThemedText style={styles.locationText}>
                 Location: {result.location.latitude.toFixed(3)}, {result.location.longitude.toFixed(3)}
               </ThemedText>
-              
+
               <ThemedText style={styles.dateText}>
                 Date: {result.dateTime.toLocaleDateString()}
               </ThemedText>

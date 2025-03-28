@@ -111,7 +111,7 @@ export default function PlantHealthScreen() {
           </TouchableOpacity>
         </Animated.View>
 
-        {health && (
+        {health && health.issues && (
           <Animated.View 
             entering={withSequence(
               withTiming({ transform: [{ translateY: 20 }] }),
