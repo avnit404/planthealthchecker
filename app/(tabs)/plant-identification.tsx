@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { ScrollView, Image, TouchableOpacity, StyleSheet, Dimensions, ActivityIndicator } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
@@ -19,7 +18,7 @@ export default function PlantIdentificationScreen() {
 
   const pickImage = async () => {
     const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    
+
     if (status !== 'granted') {
       alert('Sorry, we need camera roll permissions to make this work!');
       return;
@@ -113,66 +112,66 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   content: {
-    padding: 20,
-    paddingTop: 60,
+    padding: 16,
+    paddingBottom: 100,
   },
   header: {
-    marginBottom: 30,
+    marginBottom: 20,
   },
   title: {
-    fontSize: 32,
+    fontSize: 24,
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginBottom: 8,
   },
   subtitle: {
-    fontSize: 16,
+    fontSize: 14,
     opacity: 0.7,
   },
   uploadSection: {
     alignItems: 'center',
+    width: '100%',
   },
   uploadButton: {
-    backgroundColor: 'rgba(76, 175, 80, 0.1)',
-    padding: 30,
-    borderRadius: 20,
     alignItems: 'center',
-    width: width - 40,
-    borderWidth: 2,
-    borderColor: '#4CAF50',
-    borderStyle: 'dashed',
+    justifyContent: 'center',
+    padding: 16,
+    borderRadius: 12,
+    backgroundColor: 'rgba(76, 175, 80, 0.1)',
+    width: '100%',
+    marginBottom: 16,
+    minHeight: 120,
   },
   uploadText: {
-    marginTop: 10,
-    fontSize: 16,
+    marginTop: 8,
+    fontSize: 14,
   },
   image: {
-    width: width - 40,
-    height: 300,
-    borderRadius: 20,
-    marginTop: 20,
+    width: '100%',
+    height: width * 0.7,
+    borderRadius: 12,
+    marginBottom: 16,
   },
   loader: {
-    marginTop: 20,
+    marginVertical: 16,
   },
   resultCard: {
-    backgroundColor: 'rgba(76, 175, 80, 0.1)',
-    padding: 20,
-    borderRadius: 20,
-    width: width - 40,
-    marginTop: 20,
+    backgroundColor: 'rgba(255, 255, 255, 0.1)',
+    padding: 16,
+    borderRadius: 12,
+    width: '100%',
   },
   resultTitle: {
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: 'bold',
-    marginBottom: 10,
+    marginBottom: 8,
   },
   resultDetail: {
-    fontSize: 16,
-    fontStyle: 'italic',
-    marginBottom: 10,
+    fontSize: 14,
+    opacity: 0.8,
+    marginBottom: 12,
   },
   resultDescription: {
-    fontSize: 14,
+    fontSize: 13,
     lineHeight: 20,
   },
 });
