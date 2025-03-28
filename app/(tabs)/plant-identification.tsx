@@ -64,7 +64,15 @@ export default function PlantIdentificationScreen() {
       });
 
       const data = await apiResponse.json();
-      setResult(data.result);
+      if (data.result?.classification?.suggestions?.[0]) {
+        const suggestion = data.result.classification.suggestions[0];
+        setResult({
+          plantName: suggestion.name,
+          scientificName: suggestion.name,
+          description: `Probability: ${(suggestion.probability * 100).toFixed(1)}%`,
+          similarImages: suggestion.similar_images?.map(img => img.url_small) || []
+        });
+      }
     } catch (error) {
       alert('Error identifying plant: ' + error.message);
     } finally {
