@@ -2,8 +2,8 @@
 import { stripe } from '../../../config/stripe';
 
 export async function POST(req: Request) {
-  if (!stripe) {
-    return Response.json({ error: 'Stripe is not initialized on client' }, { status: 500 });
+  if (!process.env.EXPO_PUBLIC_STRIPE_SECRET_KEY) {
+    return Response.json({ error: 'Missing Stripe secret key' }, { status: 500 });
   }
 
   try {
