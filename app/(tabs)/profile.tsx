@@ -23,6 +23,27 @@ export default function ProfileScreen() {
     }
   };
 
+  const handleDeleteAccount = async () => {
+    try {
+      const user = auth.currentUser;
+      if (!user) return;
+
+      const confirmDelete = confirm('Are you sure you want to delete your account? This action cannot be undone.');
+      if (!confirmDelete) return;
+
+      await user.delete();
+      router.replace('/auth/register');
+    } catch (error: any) {
+      if (error.code === 'auth/requires-recent-login') {
+        alert('Please log out and log back in to delete your account');
+        await signOut(auth);
+        router.replace('/auth/login');
+      } else {
+        alert(error.message);
+      }
+    }
+  };
+
   return (
     <ThemedView style={styles.container}>
       <Animated.View 
@@ -80,6 +101,11 @@ export default function ProfileScreen() {
               <MaterialCommunityIcons name="logout" size={24} color="#f44336" />
               <ThemedText style={styles.logoutText}>Logout</ThemedText>
             </TouchableOpacity>
+
+            <TouchableOpacity onPress={handleDeleteAccount} style={[styles.logoutButton, styles.deleteButton]}>
+              <MaterialCommunityIcons name="account-remove" size={24} color="#d32f2f" />
+              <ThemedText style={[styles.logoutText, styles.deleteText]}>Delete Account</ThemedText>
+            </TouchableOpacity>
           </Animated.View>
         </View>
       </Animated.View>
@@ -88,6 +114,13 @@ export default function ProfileScreen() {
 }
 
 const styles = StyleSheet.create({
+  deleteButton: {
+    marginTop: 10,
+    backgroundColor: '#ffebee',
+  },
+  deleteText: {
+    color: '#d32f2f',
+  },
   container: {
     flex: 1,
     padding: 20,
