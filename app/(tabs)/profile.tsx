@@ -1,6 +1,5 @@
-
 import React from 'react';
-import { View, StyleSheet, TouchableOpacity, Dimensions } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, Dimensions, ScrollView } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { signOut } from 'firebase/auth';
 import { auth } from '../../config/firebase';
@@ -46,74 +45,79 @@ export default function ProfileScreen() {
 
   return (
     <ThemedView style={styles.container}>
-      <Animated.View 
-        entering={FadeInDown.springify()}
-        style={styles.profileCard}
-      >
-        <View style={styles.avatarContainer}>
-          <MaterialCommunityIcons name="account-circle" size={80} color="#4CAF50" />
-          <ThemedText style={styles.userName}>{user?.email || 'User'}</ThemedText>
-        </View>
+      <ScrollView contentContainerStyle={styles.scrollContent}>
+        <Animated.View 
+          entering={FadeInDown.springify()}
+          style={styles.profileCard}
+        >
+          <View style={styles.avatarContainer}>
+            <MaterialCommunityIcons name="account-circle" size={80} color="#4CAF50" />
+            <ThemedText style={styles.userName}>{user?.email || 'User'}</ThemedText>
+          </View>
 
-        <View style={styles.infoSection}>
-          <Animated.View 
-            entering={FadeInDown.delay(100).springify()}
-            style={styles.subscriptionCard}
-          >
-            <MaterialCommunityIcons name="star-circle" size={24} color="#4CAF50" />
-            <ThemedText style={styles.subscriptionTitle}>Free Plan</ThemedText>
-            <ThemedText style={styles.subscriptionDetails}>Basic features included</ThemedText>
-          </Animated.View>
-
-          <Animated.View 
-            entering={FadeInDown.delay(200).springify()}
-            style={styles.upgradeCard}
-          >
-            <TouchableOpacity 
-              onPress={async () => {
-                try {
-                  await initializePurchases();
-                  const products = await getProducts();
-                  if (products.length > 0) {
-                    const purchase = await purchasePremium();
-                    if (purchase) {
-                      Alert.alert('Success', 'Premium plan activated!');
-                    }
-                  }
-                } catch (error) {
-                  Alert.alert('Error', 'Failed to process purchase');
-                }
-              }}
-              style={styles.upgradeButton}
+          <View style={styles.infoSection}>
+            <Animated.View 
+              entering={FadeInDown.delay(100).springify()}
+              style={styles.subscriptionCard}
             >
-              <MaterialCommunityIcons name="crown" size={30} color="#4CAF50" />
-              <View>
-                <ThemedText style={styles.upgradeTitle}>Upgrade to Premium</ThemedText>
-                <ThemedText style={styles.upgradeDetails}>Get access to all features</ThemedText>
-              </View>
-            </TouchableOpacity>
-          </Animated.View>
+              <MaterialCommunityIcons name="star-circle" size={24} color="#4CAF50" />
+              <ThemedText style={styles.subscriptionTitle}>Free Plan</ThemedText>
+              <ThemedText style={styles.subscriptionDetails}>Basic features included</ThemedText>
+            </Animated.View>
 
-          <Animated.View 
-            entering={FadeInDown.delay(300).springify()}
-          >
-            <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
-              <MaterialCommunityIcons name="logout" size={24} color="#f44336" />
-              <ThemedText style={styles.logoutText}>Logout</ThemedText>
-            </TouchableOpacity>
+            <Animated.View 
+              entering={FadeInDown.delay(200).springify()}
+              style={styles.upgradeCard}
+            >
+              <TouchableOpacity 
+                onPress={async () => {
+                  try {
+                    await initializePurchases();
+                    const products = await getProducts();
+                    if (products.length > 0) {
+                      const purchase = await purchasePremium();
+                      if (purchase) {
+                        Alert.alert('Success', 'Premium plan activated!');
+                      }
+                    }
+                  } catch (error) {
+                    Alert.alert('Error', 'Failed to process purchase');
+                  }
+                }}
+                style={styles.upgradeButton}
+              >
+                <MaterialCommunityIcons name="crown" size={30} color="#4CAF50" />
+                <View>
+                  <ThemedText style={styles.upgradeTitle}>Upgrade to Premium</ThemedText>
+                  <ThemedText style={styles.upgradeDetails}>Get access to all features</ThemedText>
+                </View>
+              </TouchableOpacity>
+            </Animated.View>
 
-            <TouchableOpacity onPress={handleDeleteAccount} style={[styles.logoutButton, styles.deleteButton]}>
-              <MaterialCommunityIcons name="account-remove" size={24} color="#d32f2f" />
-              <ThemedText style={[styles.logoutText, styles.deleteText]}>Delete Account</ThemedText>
-            </TouchableOpacity>
-          </Animated.View>
-        </View>
-      </Animated.View>
+            <Animated.View 
+              entering={FadeInDown.delay(300).springify()}
+            >
+              <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
+                <MaterialCommunityIcons name="logout" size={24} color="#f44336" />
+                <ThemedText style={styles.logoutText}>Logout</ThemedText>
+              </TouchableOpacity>
+
+              <TouchableOpacity onPress={handleDeleteAccount} style={[styles.logoutButton, styles.deleteButton]}>
+                <MaterialCommunityIcons name="account-remove" size={24} color="#d32f2f" />
+                <ThemedText style={[styles.logoutText, styles.deleteText]}>Delete Account</ThemedText>
+              </TouchableOpacity>
+            </Animated.View>
+          </View>
+        </Animated.View>
+      </ScrollView>
     </ThemedView>
   );
 }
 
 const styles = StyleSheet.create({
+  scrollContent: {
+    flexGrow: 1,
+  },
   deleteButton: {
     marginTop: 10,
     backgroundColor: '#ffebee',
