@@ -69,9 +69,13 @@ export default function PlantHealthScreen() {
       const data = await apiResponse.json();
       if (data.result?.classification?.suggestions?.[0]) {
         const suggestion = data.result.classification.suggestions[0];
+        const issues = data.result.disease?.suggestions || [];
         setHealth({
           status: "Analysis Complete",
-          issues: [`Identified as: ${suggestion.name}`],
+          issues: [
+            `Identified as: ${suggestion.name}`,
+            ...issues.map(issue => issue.name)
+          ],
           recommendations: [`Confidence: ${(suggestion.probability * 100).toFixed(1)}%`]
         });
       } else {

@@ -155,6 +155,46 @@ export default function PlantIdentificationScreen() {
 }
 
 const styles = StyleSheet.create({
+  confidentBar: {
+    height: 8,
+    backgroundColor: '#e1e5ee',
+    borderRadius: 4,
+    marginVertical: 8,
+  },
+  confidentFill: {
+    height: '100%',
+    backgroundColor: '#4CAF50',
+    borderRadius: 4,
+  },
+  locationText: {
+    fontSize: 14,
+    color: '#666d87',
+    marginTop: 8,
+  },
+  dateText: {
+    fontSize: 14,
+    color: '#666d87',
+    marginBottom: 16,
+  },
+  similarImagesTitle: {
+    fontSize: 18,
+    fontWeight: '600',
+    marginBottom: 12,
+    color: '#1a2138',
+  },
+  similarImageContainer: {
+    marginBottom: 16,
+  },
+  similarityText: {
+    fontSize: 14,
+    color: '#4a5578',
+    marginTop: 4,
+  },
+  citationText: {
+    fontSize: 12,
+    color: '#666d87',
+    marginTop: 2,
+  },
   container: {
     flex: 1,
   },
