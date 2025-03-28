@@ -69,8 +69,18 @@ export default function PlantIdentificationScreen() {
         setResult({
           plantName: suggestion.name,
           scientificName: suggestion.name,
-          description: `Probability: ${(suggestion.probability * 100).toFixed(1)}%`,
-          similarImages: suggestion.similar_images?.map(img => img.url_small) || []
+          probability: suggestion.probability,
+          similarImages: suggestion.similar_images?.map(img => ({
+            url: img.url_small,
+            citation: img.citation,
+            license: img.license_name,
+            similarity: img.similarity
+          })) || [],
+          location: {
+            latitude: data.input.latitude,
+            longitude: data.input.longitude
+          },
+          dateTime: new Date(data.input.datetime)
         });
       }
     } catch (error) {
@@ -106,9 +116,35 @@ export default function PlantIdentificationScreen() {
             <Animated.View entering={FadeInUp} style={styles.resultCard}>
               <ThemedText style={styles.resultTitle}>{result.plantName}</ThemedText>
               <ThemedText style={styles.resultDetail}>{result.scientificName}</ThemedText>
-              <ThemedText style={styles.resultDescription}>{result.description}</ThemedText>
+              
+              <View style={styles.confidentBar}>
+                <Animated.View 
+                  style={[styles.confidentFill, { width: `${result.probability * 100}%` }]} 
+                />
+              </View>
+              <ThemedText style={styles.resultDescription}>
+                Confidence: {(result.probability * 100).toFixed(1)}%
+              </ThemedText>
+              
+              <ThemedText style={styles.locationText}>
+                Location: {result.location.latitude.toFixed(3)}, {result.location.longitude.toFixed(3)}
+              </ThemedText>
+              
+              <ThemedText style={styles.dateText}>
+                Date: {result.dateTime.toLocaleDateString()}
+              </ThemedText>
+
+              <ThemedText style={styles.similarImagesTitle}>Similar Plants</ThemedText>
               {result.similarImages && result.similarImages.map((img, index) => (
-                <Image key={index} source={{uri: img}} style={styles.similarImage} />
+                <View key={index} style={styles.similarImageContainer}>
+                  <Image source={{uri: img.url}} style={styles.similarImage} />
+                  <ThemedText style={styles.similarityText}>
+                    Similarity: {(img.similarity * 100).toFixed(1)}%
+                  </ThemedText>
+                  <ThemedText style={styles.citationText}>
+                    Photo by: {img.citation} ({img.license})
+                  </ThemedText>
+                </View>
               ))}
             </Animated.View>
           )}

@@ -1,12 +1,11 @@
 
 import { Tabs } from 'expo-router';
-import React from 'react';
 import { Platform } from 'react-native';
-import { HapticTab } from '@/components/HapticTab';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import TabBarBackground from '@/components/ui/TabBarBackground';
-import { Colors } from '@/constants/Colors';
+import Colors from '@/constants/Colors';
 import { useColorScheme } from '@/hooks/useColorScheme';
+import HapticTab from '@/components/HapticTab';
+import TabBarBackground from '@/components/ui/TabBarBackground';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
@@ -38,7 +37,7 @@ export default function TabLayout() {
       <Tabs.Screen
         name="plant-identification"
         options={{
-          tabBarIcon: ({ color, size }) => (
+          tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="leaf" size={28} color={color} />
           ),
         }}
@@ -46,16 +45,8 @@ export default function TabLayout() {
       <Tabs.Screen
         name="plant-check"
         options={{
-          tabBarIcon: ({ color, size }) => (
+          tabBarIcon: ({ color }) => (
             <MaterialCommunityIcons name="heart-pulse" size={28} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="profile"
-        options={{
-          tabBarIcon: ({ color, size }) => (
-            <MaterialCommunityIcons name="account" size={28} color={color} />
           ),
         }}
       />
