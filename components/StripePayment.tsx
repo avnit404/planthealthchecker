@@ -1,4 +1,3 @@
-
 import { useState } from 'react';
 import { View, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { loadStripe } from '@stripe/stripe-js';
@@ -16,10 +15,10 @@ export const StripePayment = () => {
       alert('Please login first');
       return;
     }
-    
+
     setLoading(true);
     try {
-      const response = await fetch(`${process.env.EXPO_PUBLIC_APP_URL}/api/create-checkout-session`, {
+      const response = await fetch(`${process.env.EXPO_PUBLIC_APP_URL}/server/create-checkout-session`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -29,10 +28,10 @@ export const StripePayment = () => {
           userId: auth.currentUser.uid,
         }),
       });
-      
+
       const { sessionId } = await response.json();
       const stripe = await stripePromise;
-      
+
       if (stripe) {
         const { error } = await stripe.redirectToCheckout({ sessionId });
         if (error) throw error;
