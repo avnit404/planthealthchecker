@@ -44,11 +44,31 @@ export default function PlantHealthScreen() {
 
     if (!result.canceled) {
       setImage(result.assets[0].uri);
-      setHealth({
-        status: "Healthy",
-        issues: [],
-        recommendations: ["Regular watering", "Adequate sunlight"]
+      const response = await fetch(result.assets[0].uri);
+      const blob = await response.blob();
+      const base64Image = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result.split(',')[1]);
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
       });
+
+      const apiResponse = await fetch('https://plant.id/api/v3/health_assessment', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Api-Key': process.env.EXPO_PUBLIC_PLANT_ID_API_KEY,
+        },
+        body: JSON.stringify({
+          images: [base64Image],
+          latitude: 49.207,
+          longitude: 16.608,
+          similar_images: true,
+        }),
+      });
+
+      const data = await apiResponse.json();
+      setHealth(data.result);
     }
   };
 

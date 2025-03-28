@@ -41,23 +41,31 @@ export default function PlantIdentificationScreen() {
   const identifyPlant = async (imageUri) => {
     setLoading(true);
     try {
-      const formData = new FormData();
-      formData.append('images', {
-        uri: imageUri,
-        type: 'image/jpeg',
-        name: 'plant.jpg',
+      const response = await fetch(imageUri);
+      const blob = await response.blob();
+      const base64Image = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onloadend = () => resolve(reader.result.split(',')[1]);
+        reader.onerror = reject;
+        reader.readAsDataURL(blob);
       });
 
-      const response = await fetch('YOUR_PLANT_IDENTIFICATION_API_ENDPOINT', {
+      const apiResponse = await fetch('https://plant.id/api/v3/identification', {
         method: 'POST',
-        body: formData,
         headers: {
-          'Api-Key': 'YOUR_API_KEY',
+          'Content-Type': 'application/json',
+          'Api-Key': process.env.EXPO_PUBLIC_PLANT_ID_API_KEY,
         },
+        body: JSON.stringify({
+          images: [base64Image],
+          latitude: 49.207,
+          longitude: 16.608,
+          similar_images: true,
+        }),
       });
 
-      const data = await response.json();
-      setResult(data);
+      const data = await apiResponse.json();
+      setResult(data.result);
     } catch (error) {
       alert('Error identifying plant: ' + error.message);
     } finally {
