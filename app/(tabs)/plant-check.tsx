@@ -1,21 +1,17 @@
+
 import React, { useState } from 'react';
-import { View, Image, TouchableOpacity, StyleSheet, Dimensions } from 'react-native';
+import { ScrollView, Image, TouchableOpacity, StyleSheet, Dimensions, ActivityIndicator, View } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
-import Animated, { 
-  useAnimatedStyle, 
-  withSpring, 
-  useSharedValue,
-  withSequence,
-  withTiming
-} from 'react-native-reanimated';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import Animated, { FadeInDown, FadeInUp, withSequence, withSpring, withTiming, useSharedValue, useAnimatedStyle } from 'react-native-reanimated';
 
 const { width } = Dimensions.get('window');
 
 export default function PlantHealthScreen() {
   const [image, setImage] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [health, setHealth] = useState(null);
   const buttonScale = useSharedValue(1);
 
@@ -43,7 +39,14 @@ export default function PlantHealthScreen() {
 
     if (!result.canceled) {
       setImage(result.assets[0].uri);
-      const response = await fetch(result.assets[0].uri);
+      analyzeHealth(result.assets[0].uri);
+    }
+  };
+
+  const analyzeHealth = async (imageUri) => {
+    setLoading(true);
+    try {
+      const response = await fetch(imageUri);
       const blob = await response.blob();
       const base64Image = await new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -85,134 +88,164 @@ export default function PlantHealthScreen() {
           recommendations: ["Please try again with a clearer image"]
         });
       }
+    } catch (error) {
+      alert('Error analyzing plant health: ' + error.message);
+      setHealth({
+        status: "Error",
+        issues: ["Error analyzing plant"],
+        recommendations: ["Please try again"]
+      });
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <ThemedView style={styles.container}>
-      <Animated.View style={[styles.glassCard, { opacity: image ? 0.98 : 0.9 }]}>
-        <ThemedText style={styles.title}>Plant Health Check</ThemedText>
-
-        <Animated.View style={[styles.uploadArea, animatedStyles]}>
-          <TouchableOpacity 
-            style={styles.uploadButton} 
-            onPress={pickImage}
-            onPressIn={handlePressIn}
-            onPressOut={handlePressOut}
-          >
-            {!image ? (
-              <>
-                <MaterialCommunityIcons name="leaf-circle" size={40} color="#fff" />
-                <ThemedText style={styles.uploadText}>Upload Plant Image</ThemedText>
-              </>
-            ) : (
-              <Image source={{ uri: image }} style={styles.image} />
-            )}
-          </TouchableOpacity>
+    <ScrollView style={styles.container}>
+      <ThemedView style={styles.content}>
+        <Animated.View entering={FadeInDown} style={styles.header}>
+          <ThemedText style={styles.title}>Plant Health Check</ThemedText>
+          <ThemedText style={styles.subtitle}>Upload a photo to check plant health</ThemedText>
         </Animated.View>
 
-        {health && health.issues && (
-          <Animated.View 
-            entering={withSequence(
-              withTiming({ transform: [{ translateY: 20 }] }),
-              withSpring({ transform: [{ translateY: 0 }] })
-            )}
-            style={styles.healthCard}
-          >
-            <View style={styles.statusContainer}>
-              <MaterialCommunityIcons 
-                name={health.status === "Healthy" ? "check-circle" : "alert-circle"} 
-                size={24} 
-                color={health.status === "Healthy" ? "#4CAF50" : "#f44336"} 
-              />
-              <ThemedText style={styles.statusText}>{health.status}</ThemedText>
-            </View>
+        <Animated.View entering={FadeInDown.delay(200)} style={styles.uploadSection}>
+          <TouchableOpacity onPress={pickImage} style={styles.uploadButton}>
+            <MaterialCommunityIcons name="heart-pulse" size={40} color="#4CAF50" />
+            <ThemedText style={styles.uploadText}>Upload Photo</ThemedText>
+          </TouchableOpacity>
 
-            {health.recommendations.map((rec, index) => (
-              <View key={index} style={styles.recommendationItem}>
-                <MaterialCommunityIcons name="lightbulb-on" size={20} color="#FFD700" />
-                <ThemedText style={styles.recommendationText}>{rec}</ThemedText>
+          {image && (
+            <Image source={{ uri: image }} style={styles.image} />
+          )}
+
+          {loading && (
+            <ActivityIndicator size="large" color="#4CAF50" style={styles.loader} />
+          )}
+
+          {health && health.issues && (
+            <Animated.View entering={FadeInUp} style={styles.resultCard}>
+              <ThemedText style={styles.resultTitle}>{health.status}</ThemedText>
+              
+              {health.issues.map((issue, index) => (
+                <ThemedText key={index} style={styles.resultDetail}>{issue}</ThemedText>
+              ))}
+
+              <View style={styles.confidentBar}>
+                <Animated.View 
+                  style={[styles.confidentFill, { width: health.recommendations[0].includes('Confidence') ? 
+                    `${parseFloat(health.recommendations[0].split(':')[1])}%` : '0%' }]} 
+                />
               </View>
-            ))}
-          </Animated.View>
-        )}
-      </Animated.View>
-    </ThemedView>
+
+              {health.recommendations.map((rec, index) => (
+                <ThemedText key={index} style={styles.recommendationText}>{rec}</ThemedText>
+              ))}
+            </Animated.View>
+          )}
+        </Animated.View>
+      </ThemedView>
+    </ScrollView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
   },
-  glassCard: {
-    backgroundColor: 'rgba(255, 255, 255, 0.1)',
-    borderRadius: 16,
+  content: {
+    flex: 1,
     padding: 16,
-    width: '100%',
+    backgroundColor: '#f7f9fc',
+  },
+  header: {
+    marginBottom: 24,
+    alignItems: 'center',
   },
   title: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 16,
+    fontSize: 32,
+    fontWeight: '800',
+    marginBottom: 8,
+    color: '#1a2138',
     textAlign: 'center',
-    color: '#fff',
-    textShadow: '0 0 10px rgba(255,255,255,0.3)',
   },
-  uploadArea: {
+  subtitle: {
+    fontSize: 16,
+    color: '#666d87',
+    textAlign: 'center',
+    maxWidth: '80%',
+  },
+  uploadSection: {
     alignItems: 'center',
-    justifyContent: 'center',
-    marginTop: 16,
-    width: '100%',
   },
   uploadButton: {
-    width: '100%',
-    height: width * 0.6,
-    backgroundColor: 'rgba(76, 175, 80, 0.2)',
-    borderRadius: 12,
     alignItems: 'center',
     justifyContent: 'center',
-    overflow: 'hidden',
+    padding: 24,
+    borderRadius: 20,
+    backgroundColor: '#ffffff',
+    marginBottom: 24,
+    width: width - 48,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 12,
+    elevation: 5,
     borderWidth: 2,
-    borderColor: 'rgba(255, 255, 255, 0.1)',
+    borderColor: '#e1e5ee',
     borderStyle: 'dashed',
   },
   uploadText: {
-    marginTop: 8,
-    fontSize: 14,
-    color: '#fff',
+    marginTop: 12,
+    fontSize: 16,
+    color: '#4a5578',
+    fontWeight: '600',
   },
   image: {
-    width: '100%',
-    height: width * 0.6,
-    borderRadius: 12,
+    width: width - 32,
+    height: 350,
+    borderRadius: 24,
+    marginBottom: 24,
   },
-  healthCard: {
-    backgroundColor: 'rgba(255, 255, 255, 0.05)',
-    padding: 16,
-    borderRadius: 15,
-    marginTop: 16,
+  loader: {
+    marginVertical: 24,
   },
-  statusContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 15,
+  resultCard: {
+    backgroundColor: '#ffffff',
+    borderRadius: 24,
+    padding: 24,
+    marginBottom: 24,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 8 },
+    shadowOpacity: 0.1,
+    shadowRadius: 24,
+    elevation: 5,
   },
-  statusText: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#fff',
-    marginLeft: 10,
+  resultTitle: {
+    fontSize: 28,
+    fontWeight: '800',
+    marginBottom: 12,
+    color: '#1a2138',
   },
-  recommendationItem: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginVertical: 5,
+  resultDetail: {
+    fontSize: 18,
+    color: '#4a5578',
+    marginBottom: 16,
+    fontWeight: '600',
   },
   recommendationText: {
-    color: 'rgba(255, 255, 255, 0.9)',
-    marginLeft: 10,
-    fontSize: 16,
+    fontSize: 15,
+    color: '#666d87',
+    marginTop: 8,
+  },
+  confidentBar: {
+    height: 8,
+    backgroundColor: '#e1e5ee',
+    borderRadius: 4,
+    marginVertical: 8,
+  },
+  confidentFill: {
+    height: '100%',
+    backgroundColor: '#4CAF50',
+    borderRadius: 4,
   },
 });
