@@ -12,11 +12,14 @@ export const StripePayment = () => {
   const [loading, setLoading] = useState(false);
 
   const handlePayment = async () => {
-    if (!auth.currentUser) return;
+    if (!auth.currentUser) {
+      alert('Please login first');
+      return;
+    }
     
     setLoading(true);
     try {
-      const response = await fetch('/api/create-checkout-session', {
+      const response = await fetch(`${process.env.EXPO_PUBLIC_APP_URL}/api/create-checkout-session`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

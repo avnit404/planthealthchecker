@@ -1,13 +1,10 @@
 
 import { stripe } from '../../config/stripe';
+import { NextResponse } from 'next/server';
 
-export default async function handler(req: any, res: any) {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method not allowed' });
-  }
-
+export async function POST(req: Request) {
   try {
-    const { priceId, userId } = req.body;
+    const { priceId, userId } = await req.json();
 
     const session = await stripe.checkout.sessions.create({
       mode: 'subscription',
@@ -16,13 +13,16 @@ export default async function handler(req: any, res: any) {
         price: priceId,
         quantity: 1,
       }],
-      success_url: `${process.env.EXPO_PUBLIC_APP_URL}/payment-success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.EXPO_PUBLIC_APP_URL}/payment-cancelled`,
+      success_url: `${process.env.EXPO_PUBLIC_APP_URL}/(tabs)/profile?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${process.env.EXPO_PUBLIC_APP_URL}/(tabs)/profile`,
       client_reference_id: userId,
+      metadata: {
+        userId: userId,
+      },
     });
 
-    res.json({ sessionId: session.id });
+    return NextResponse.json({ sessionId: session.id });
   } catch (error: any) {
-    res.status(500).json({ error: error.message });
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
