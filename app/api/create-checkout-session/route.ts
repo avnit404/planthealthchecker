@@ -1,28 +1,31 @@
 
 import { stripe } from '../../../config/stripe';
 
-export default async function handler(req: Request) {
-  if (!process.env.EXPO_PUBLIC_STRIPE_SECRET_KEY) {
-    return Response.json({ error: 'Missing Stripe secret key' }, { status: 500 });
-  }
+// Default export for Expo Router
+export default function Page() {
+  return null;
+}
 
+// API route handler
+export async function POST(req: Request) {
   try {
     const { priceId, userId } = await req.json();
 
     const session = await stripe.checkout.sessions.create({
       mode: 'subscription',
+      payment_method_types: ['card'],
       line_items: [{
         price: priceId,
         quantity: 1,
       }],
-      success_url: `${process.env.EXPO_PUBLIC_APP_URL}/profile?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.EXPO_PUBLIC_APP_URL}/profile`,
+      success_url: `${process.env.EXPO_PUBLIC_APP_URL}/payment-success`,
+      cancel_url: `${process.env.EXPO_PUBLIC_APP_URL}/payment-cancelled`,
       metadata: {
         userId,
       },
     });
 
-    return Response.json({ sessionId: session.id });
+    return Response.json({ url: session.url });
   } catch (error: any) {
     return Response.json({ error: error.message }, { status: 500 });
   }
