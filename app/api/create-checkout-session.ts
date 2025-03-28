@@ -1,8 +1,14 @@
 
 import { stripe } from '../../config/stripe';
-import { Response } from 'express';
 
 export default async function handler(req: Request) {
+  if (req.method !== 'POST') {
+    return new Response(JSON.stringify({ error: 'Method not allowed' }), {
+      status: 405,
+      headers: { 'Content-Type': 'application/json' }
+    });
+  }
+
   try {
     const { priceId, userId } = await req.json();
 
