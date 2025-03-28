@@ -74,7 +74,7 @@ export default function TabLayout() {
         name="plant-identification"
         options={{
           tabBarIcon: ({ focused, color }) => (
-            <AnimatedTabIcon name="image-search" focused={focused} color={color} size={28} />
+            <AnimatedTabIcon name="leaf" focused={focused} color={color} size={28} />
           ),
         }}
       />
