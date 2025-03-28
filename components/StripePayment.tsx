@@ -18,7 +18,7 @@ export const StripePayment = () => {
 
     setLoading(true);
     try {
-      const response = await fetch(`${process.env.EXPO_PUBLIC_APP_URL}/api/create-checkout-session/route`, {
+      const response = await fetch('/api/create-checkout-session', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -29,12 +29,9 @@ export const StripePayment = () => {
         }),
       });
 
-      const { sessionId } = await response.json();
-      const stripe = await stripePromise;
-
-      if (stripe) {
-        const { error } = await stripe.redirectToCheckout({ sessionId });
-        if (error) throw error;
+      const { url } = await response.json();
+      if (url) {
+        window.location.href = url;
       }
     } catch (error: any) {
       console.error('Payment error:', error);
