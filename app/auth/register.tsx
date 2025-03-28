@@ -1,22 +1,22 @@
 
 import React, { useState } from 'react';
 import { View, StyleSheet, TouchableOpacity, TextInput, Platform } from 'react-native';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../config/firebase';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 
-export default function LoginScreen() {
+export default function RegisterScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
 
-  const handleLogin = async () => {
+  const handleRegister = async () => {
     try {
       setError('');
-      await signInWithEmailAndPassword(auth, email, password);
+      await createUserWithEmailAndPassword(auth, email, password);
       router.replace('/(tabs)');
     } catch (error: any) {
       setError(error.message);
@@ -26,7 +26,7 @@ export default function LoginScreen() {
   return (
     <ThemedView style={styles.container}>
       <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
-      <ThemedText type="title" style={styles.title}>Welcome Back</ThemedText>
+      <ThemedText type="title" style={styles.title}>Create Account</ThemedText>
       
       {error ? <ThemedText style={styles.error}>{error}</ThemedText> : null}
       
@@ -49,12 +49,12 @@ export default function LoginScreen() {
         placeholderTextColor="#666"
       />
       
-      <TouchableOpacity onPress={handleLogin} style={styles.button}>
-        <ThemedText style={styles.buttonText}>Login</ThemedText>
+      <TouchableOpacity onPress={handleRegister} style={styles.button}>
+        <ThemedText style={styles.buttonText}>Register</ThemedText>
       </TouchableOpacity>
       
-      <TouchableOpacity onPress={() => router.push('/auth/register')}>
-        <ThemedText style={styles.link}>Don't have an account? Register</ThemedText>
+      <TouchableOpacity onPress={() => router.push('/auth/login')}>
+        <ThemedText style={styles.link}>Already have an account? Login</ThemedText>
       </TouchableOpacity>
     </ThemedView>
   );
