@@ -29,7 +29,6 @@ export default function ProfileScreen() {
         Alert.alert('Error', 'No user is currently signed in');
         return;
       }
-
       Alert.alert(
         'Delete Account',
         'Are you sure you want to delete your account? This action cannot be undone.',
