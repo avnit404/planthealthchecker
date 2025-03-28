@@ -5,9 +5,9 @@ import * as ImagePicker from 'expo-image-picker';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 
-export default function PlantHealthScreen() {
+export default function PlantIdentificationScreen() {
   const [image, setImage] = useState(null);
-  const [health, setHealth] = useState(null);
+  const [result, setResult] = useState(null);
 
   const pickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -19,18 +19,18 @@ export default function PlantHealthScreen() {
 
     if (!result.canceled) {
       setImage(result.assets[0].uri);
-      // TODO: Add API call to check plant health
-      setHealth({
-        status: "Healthy",
-        issues: [],
-        recommendations: ["Regular watering", "Adequate sunlight"]
+      // TODO: Add API call to identify plant
+      setResult({
+        name: "Sample Plant",
+        scientificName: "Plantus Exampleus",
+        description: "A beautiful plant species..."
       });
     }
   };
 
   return (
     <ThemedView style={styles.container}>
-      <ThemedText type="title">Plant Health Check</ThemedText>
+      <ThemedText type="title">Plant Identification</ThemedText>
       
       <TouchableOpacity style={styles.uploadButton} onPress={pickImage}>
         <ThemedText>Upload Image</ThemedText>
@@ -40,15 +40,11 @@ export default function PlantHealthScreen() {
         <Image source={{ uri: image }} style={styles.image} />
       )}
 
-      {health && (
+      {result && (
         <View style={styles.resultCard}>
-          <ThemedText type="subtitle">Health Status: {health.status}</ThemedText>
-          {health.issues.map((issue, index) => (
-            <ThemedText key={index}>Issue: {issue}</ThemedText>
-          ))}
-          {health.recommendations.map((rec, index) => (
-            <ThemedText key={index}>• {rec}</ThemedText>
-          ))}
+          <ThemedText type="subtitle">{result.name}</ThemedText>
+          <ThemedText>{result.scientificName}</ThemedText>
+          <ThemedText>{result.description}</ThemedText>
         </View>
       )}
     </ThemedView>
