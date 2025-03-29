@@ -9,6 +9,7 @@ import {
   TextInput,
   Text,
   Alert,
+  Platform,
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import {
