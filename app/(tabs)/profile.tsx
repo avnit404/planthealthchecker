@@ -8,6 +8,7 @@ import {
   Modal,
   TextInput,
   Text,
+  Alert,
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import {
@@ -20,7 +21,6 @@ import { router } from "expo-router";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import Animated, { ZoomIn } from "react-native-reanimated";
-import { initializePayments, purchasePremium } from "../../utils/payments";
 
 const { width } = Dimensions.get("window");
 
@@ -97,10 +97,21 @@ export default function ProfileScreen() {
       router.replace("/auth/register");
     } catch (error: any) {
       if (error.code === 'auth/requires-recent-login') {
-        console.log("Session expired, logging out");
-        handleLogout();
+        Alert.alert(
+          "Session Expired",
+          "For security reasons, please log out and log back in before deleting your account.",
+          [
+            { text: "OK", onPress: handleLogout }
+          ]
+        );
       } else {
-        console.log("Failed to delete account:", error);
+        Alert.alert(
+          "Unable to Delete Account", 
+          "There was a problem deleting your account. Please try again later.",
+          [
+            { text: "OK" }
+          ]
+        );
       }
     }
   };
@@ -153,16 +164,26 @@ export default function ProfileScreen() {
                     await initializePayments();
                     const success = await purchasePremium();
                     if (success) {
-                    console.log("Premium plan activated successfully!");
-                    // You can add state management here to show success message
-                  } else {
-                    console.log("Failed to process payment");
-                    // You can add state management here to show error message
+                      Alert.alert(
+                        "Success",
+                        "Premium plan activated!",
+                        [{ text: "OK" }]
+                      );
+                    } else {
+                      Alert.alert(
+                        "Error",
+                        "Failed to process payment. Please try again.",
+                        [{ text: "OK" }]
+                      );
+                    }
+                  } catch (error) {
+                    console.error("Error processing purchase:", error);
+                    Alert.alert(
+                      "Error",
+                      "An unexpected error occurred",
+                      [{ text: "OK" }]
+                    );
                   }
-                } catch (error) {
-                  console.error("Error processing purchase:", error);
-                  // You can add state management here to show error message
-                }
                 }}
                 style={styles.upgradeButton}
               >
