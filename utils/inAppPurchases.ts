@@ -1,29 +1,34 @@
 
 import { Platform } from 'react-native';
 
-// Mock implementation for web
+let InAppPurchases: any;
+
+// For web, mock the implementation
 const webMock = {
   connectAsync: async () => false,
   getProductsAsync: async () => [],
-  purchaseItemAsync: async () => null
+  purchaseItemAsync: async () => null,
 };
 
-let InAppPurchases;
-
-// Use real module for native platforms, mock for web
-if (Platform.OS === 'web') {
-  InAppPurchases = webMock;
-} else {
-  InAppPurchases = require('expo-in-app-purchases');
+// Dynamically import expo-in-app-purchases only on native platforms
+async function getInAppPurchases() {
+  if (Platform.OS === 'web') {
+    return webMock;
+  }
+  if (!InAppPurchases) {
+    InAppPurchases = (await import('expo-in-app-purchases')).default;
+  }
+  return InAppPurchases;
 }
 
 export async function initializePurchases() {
   try {
+    const iap = await getInAppPurchases();
     if (Platform.OS === 'web') {
       console.log('In-app purchases are not supported on web');
       return false;
     }
-    await InAppPurchases.connectAsync();
+    await iap.connectAsync();
     return true;
   } catch (error) {
     console.log('Failed to initialize in-app purchases:', error);
@@ -33,10 +38,8 @@ export async function initializePurchases() {
 
 export async function getProducts() {
   try {
-    if (Platform.OS === 'web') {
-      return [];
-    }
-    const products = await InAppPurchases.getProductsAsync(['premium_subscription']);
+    const iap = await getInAppPurchases();
+    const products = await iap.getProductsAsync(['premium_subscription']);
     return products;
   } catch (error) {
     console.log('Failed to get products:', error);
@@ -46,10 +49,8 @@ export async function getProducts() {
 
 export async function purchasePremium() {
   try {
-    if (Platform.OS === 'web') {
-      return null;
-    }
-    const result = await InAppPurchases.purchaseItemAsync('premium_subscription');
+    const iap = await getInAppPurchases();
+    const result = await iap.purchaseItemAsync('premium_subscription');
     return result;
   } catch (error) {
     console.log('Purchase failed:', error);
