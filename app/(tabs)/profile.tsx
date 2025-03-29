@@ -369,7 +369,7 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    marginTop: 20,
+    paddingTop: 30,
     padding: Platform.select({ ios: 20, android: 16, default: 20 }),
     backgroundColor: "#FFDDAB",
   },

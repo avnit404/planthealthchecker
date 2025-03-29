@@ -21,7 +21,7 @@ extensions.configure(com.facebook.react.ReactSettingsExtension) { ex ->
   }
 }
 
-rootProject.name = 'expo-on-replit'
+rootProject.name = 'expoonreplit'
 
 dependencyResolutionManagement {
   versionCatalogs {
