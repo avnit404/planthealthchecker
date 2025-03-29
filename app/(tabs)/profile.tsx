@@ -8,7 +8,6 @@ import {
   Modal,
   TextInput,
   Text,
-  Alert,
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import {
@@ -98,21 +97,10 @@ export default function ProfileScreen() {
       router.replace("/auth/register");
     } catch (error: any) {
       if (error.code === 'auth/requires-recent-login') {
-        Alert.alert(
-          "Session Expired",
-          "For security reasons, please log out and log back in before deleting your account.",
-          [
-            { text: "OK", onPress: handleLogout }
-          ]
-        );
+        console.log("Session expired, logging out");
+        handleLogout();
       } else {
-        Alert.alert(
-          "Unable to Delete Account", 
-          "There was a problem deleting your account. Please try again later.",
-          [
-            { text: "OK" }
-          ]
-        );
+        console.log("Failed to delete account:", error);
       }
     }
   };
@@ -165,26 +153,16 @@ export default function ProfileScreen() {
                     await initializePayments();
                     const success = await purchasePremium();
                     if (success) {
-                      Alert.alert(
-                        "Success",
-                        "Premium plan activated!",
-                        [{ text: "OK" }]
-                      );
-                    } else {
-                      Alert.alert(
-                        "Error",
-                        "Failed to process payment. Please try again.",
-                        [{ text: "OK" }]
-                      );
-                    }
-                  } catch (error) {
-                    console.error("Error processing purchase:", error);
-                    Alert.alert(
-                      "Error",
-                      "An unexpected error occurred",
-                      [{ text: "OK" }]
-                    );
+                    console.log("Premium plan activated successfully!");
+                    // You can add state management here to show success message
+                  } else {
+                    console.log("Failed to process payment");
+                    // You can add state management here to show error message
                   }
+                } catch (error) {
+                  console.error("Error processing purchase:", error);
+                  // You can add state management here to show error message
+                }
                 }}
                 style={styles.upgradeButton}
               >

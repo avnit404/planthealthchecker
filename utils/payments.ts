@@ -11,13 +11,16 @@ export const initializePayments = async () => {
     try {
       await InAppPurchases.connectAsync();
     } catch (error) {
-      console.error('Failed to connect to App Store:', error);
+      console.log('Failed to connect to App Store');
+      return false;
     }
   } else {
     try {
       await initStripe({ publishableKey: STRIPE_PUBLISHABLE_KEY });
+      return true;
     } catch (error) {
-      console.error('Failed to initialize Stripe:', error);
+      console.log('Failed to initialize Stripe');
+      return false;
     }
   }
 };
