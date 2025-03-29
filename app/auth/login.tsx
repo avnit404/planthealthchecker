@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
-import { View, StyleSheet, TouchableOpacity, TextInput, Platform } from 'react-native';
+import { View, StyleSheet, TouchableOpacity, TextInput, Platform, Pressable } from 'react-native';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../config/firebase';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { router } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default function LoginScreen() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false); // Added state for password visibility
   const [error, setError] = useState('');
 
   const handleLogin = async () => {
@@ -43,7 +45,7 @@ export default function LoginScreen() {
   };
 
   return (
-    <ThemedView style={styles.container}>
+    <ThemedView style={[styles.container, { backgroundColor: '#f0f0f0' }]}> {/* Added background color */}
       <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
       <ThemedText type="title" style={styles.title}>Welcome Back</ThemedText>
 
@@ -63,14 +65,23 @@ export default function LoginScreen() {
         placeholderTextColor="#666"
       />
 
-      <TextInput
-        placeholder="Password"
-        value={password}
-        onChangeText={setPassword}
-        secureTextEntry
-        style={styles.input}
-        placeholderTextColor="#666"
-      />
+      <View style={styles.passwordContainer}>
+        <TextInput
+          placeholder="Password"
+          secureTextEntry={!showPassword}
+          value={password}
+          onChangeText={setPassword}
+          style={styles.passwordInput}
+          placeholderTextColor="#666"
+        />
+        <Pressable onPress={() => setShowPassword(!showPassword)} style={styles.eyeIcon}>
+          <MaterialCommunityIcons
+            name={showPassword ? 'eye-off' : 'eye'}
+            size={24}
+            color="#666"
+          />
+        </Pressable>
+      </View>
 
       <TouchableOpacity onPress={handleLogin} style={styles.button}>
         <ThemedText style={styles.buttonText}>Login</ThemedText>
@@ -82,6 +93,7 @@ export default function LoginScreen() {
     </ThemedView>
   );
 }
+
 
 const styles = StyleSheet.create({
   container: {
@@ -100,6 +112,21 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     marginBottom: 16,
     fontSize: 16,
+  },
+  passwordContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#f5f5f5',
+    padding: 15,
+    borderRadius: 10,
+    marginBottom: 16,
+  },
+  passwordInput: {
+    flex: 1,
+    fontSize: 16,
+  },
+  eyeIcon: {
+    marginLeft: 10,
   },
   button: {
     backgroundColor: '#4CAF50',
