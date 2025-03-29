@@ -161,16 +161,28 @@ export default function ProfileScreen() {
               <TouchableOpacity
                 onPress={async () => {
                   try {
-                    await initializePurchases();
-                    const products = await getProducts();
-                    if (products.length > 0) {
-                      const purchase = await purchasePremium();
-                      if (purchase) {
-                        console.log("Premium plan activated!");
-                      }
+                    await initializePayments();
+                    const success = await purchasePremium();
+                    if (success) {
+                      Alert.alert(
+                        "Success",
+                        "Premium plan activated!",
+                        [{ text: "OK" }]
+                      );
+                    } else {
+                      Alert.alert(
+                        "Error",
+                        "Failed to process payment. Please try again.",
+                        [{ text: "OK" }]
+                      );
                     }
                   } catch (error) {
-                    console.log("Error processing purchase");
+                    console.error("Error processing purchase:", error);
+                    Alert.alert(
+                      "Error",
+                      "An unexpected error occurred",
+                      [{ text: "OK" }]
+                    );
                   }
                 }}
                 style={styles.upgradeButton}
