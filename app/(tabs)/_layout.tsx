@@ -12,23 +12,20 @@ const AnimatedTabIcon = ({ name, focused, color, size }) => {
   const scale = useSharedValue(1);
 
   React.useEffect(() => {
-    // Animate scale based on focus
     scale.value = withTiming(focused ? 1.2 : 1, { duration: 200 });
   }, [focused]);
 
-  // Animated style: raise icon when focused
   const animatedStyle = useAnimatedStyle(() => ({
     transform: [{ scale: scale.value }],
-    marginTop: focused ? -10 : 0, // raise the selected icon upward
+    marginTop: focused ? -10 : 0,
   }));
 
   return (
-    // If focused, wrap the icon in a white circular container
     <Animated.View style={[animatedStyle, focused && styles.selectedIconContainer]}>
       <MaterialCommunityIcons 
         name={name} 
         size={size} 
-        color={focused ? "#fff" : color} // focused icon becomes forest green; otherwise, default color is used
+        color={focused ? "#fff" : color} 
       />
     </Animated.View>
   );
@@ -38,7 +35,6 @@ export default function TabLayout() {
   return (
     <Tabs
       screenOptions={{
-        // Tint colors (for fallback; our AnimatedTabIcon overrides the focused state)
         tabBarActiveTintColor: "#FFFFFF",
         tabBarInactiveTintColor: "rgba(255,255,255,0.7)",
         headerShown: false,
@@ -48,7 +44,7 @@ export default function TabLayout() {
         tabBarStyle: Platform.select({
           ios: {
             position: "absolute",
-            backgroundColor: "#228B22", // forest green background
+            backgroundColor: "#228B22",
             borderTopWidth: 0,
             elevation: 0,
             height: 60,
@@ -99,19 +95,20 @@ export default function TabLayout() {
 }
 
 const styles = StyleSheet.create({
-  // Style applied only when the tab is focused
   selectedIconContainer: {
-    backgroundColor: "#945034", // white circular background for selected icon
-    width: 50,
-    height: 50,
-    borderRadius: 25,
+    backgroundColor: "#945034",
+    width: Platform.select({ android: 48, default: 50 }),
+    height: Platform.select({ android: 48, default: 50 }),
+    borderRadius: Platform.select({ android: 24, default: 25 }),
     justifyContent: "center",
     alignItems: "center",
-    // Optional shadow for a lifted effect
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 3,
-    elevation: 5,
+    elevation: Platform.select({ android: 6, default: 0 }),
+    shadowColor: Platform.select({ android: 'transparent', default: "#000" }),
+    shadowOffset: Platform.select({ 
+      android: undefined,
+      default: { width: 0, height: 2 } 
+    }),
+    shadowOpacity: Platform.select({ android: 0, default: 0.3 }),
+    shadowRadius: Platform.select({ android: 0, default: 3 }),
   },
 });
