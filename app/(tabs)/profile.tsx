@@ -21,6 +21,7 @@ import { router } from "expo-router";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import Animated, { ZoomIn } from "react-native-reanimated";
+import { initializePurchases, purchasePremium } from "../../utils/inAppPurchases"; // Updated import
 
 const { width } = Dimensions.get("window");
 
@@ -161,9 +162,9 @@ export default function ProfileScreen() {
               <TouchableOpacity
                 onPress={async () => {
                   try {
-                    await initializePayments();
-                    const success = await purchasePremium();
-                    if (success) {
+                    await initializePurchases(); // Updated function call
+                    const purchase = await purchasePremium(); // Updated variable name
+                    if (purchase) {
                       Alert.alert(
                         "Success",
                         "Premium plan activated!",
