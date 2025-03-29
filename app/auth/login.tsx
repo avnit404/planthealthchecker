@@ -112,6 +112,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: "#FFDDAB",
   },
+  safeArea: {
+    flex: 1,
+    justifyContent: 'center',
+    paddingHorizontal: 20,
+  },
   title: {
     fontSize: 36,
     marginBottom: 32,

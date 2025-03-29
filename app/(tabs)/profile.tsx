@@ -304,10 +304,10 @@ const styles = StyleSheet.create({
   },
   deleteButton: {
     marginTop: 10,
-    backgroundColor: "#ffebee",
+    backgroundColor: "#ff4444",
   },
   deleteText: {
-    color: "#d32f2f",
+    color: "#ffffff",
   },
   container: {
     flex: 1,
@@ -315,10 +315,18 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFDDAB",
   },
   profileCard: {
-    backgroundColor: "#27391C",
+    backgroundColor: "#ffffff",
     borderRadius: 25,
     padding: 20,
     marginTop: 20,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 12,
+    elevation: 5,
   },
   avatarContainer: {
     alignItems: "center",
