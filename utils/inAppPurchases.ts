@@ -6,9 +6,15 @@ const PREMIUM_PLAN_ID = 'YOUR_PRODUCT_ID';
 
 export async function initializePurchases() {
   try {
+    if (!InAppPurchases) {
+      console.log('InAppPurchases module not available');
+      return false;
+    }
     await InAppPurchases.connectAsync();
+    return true;
   } catch (error) {
-    console.error('Failed to connect to the store:', error);
+    console.log('Failed to initialize in-app purchases:', error);
+    return false;
   }
 }
 
@@ -20,7 +26,7 @@ export async function getProducts() {
     }
     return [];
   } catch (error) {
-    console.error('Failed to get products:', error);
+    console.log('Failed to get products:', error);
     return [];
   }
 }
@@ -33,7 +39,7 @@ export async function purchasePremium() {
     }
     return null;
   } catch (error) {
-    console.error('Purchase failed:', error);
+    console.log('Purchase failed:', error);
     return null;
   }
 }
