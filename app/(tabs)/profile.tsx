@@ -161,9 +161,25 @@ export default function ProfileScreen() {
             <Animated.View entering={ZoomIn.duration(200)} style={styles.upgradeCard}>
               <TouchableOpacity
                 onPress={async () => {
+                  if (Platform.OS === 'web') {
+                    Alert.alert(
+                      "Not Available",
+                      "In-app purchases are only available on iOS and Android devices",
+                      [{ text: "OK" }]
+                    );
+                    return;
+                  }
                   try {
-                    await initializePurchases(); // Updated function call
-                    const purchase = await purchasePremium(); // Updated variable name
+                    const initialized = await initializePurchases();
+                    if (!initialized) {
+                      Alert.alert(
+                        "Error",
+                        "Failed to initialize in-app purchases",
+                        [{ text: "OK" }]
+                      );
+                      return;
+                    }
+                    const purchase = await purchasePremium();
                     if (purchase) {
                       Alert.alert(
                         "Success",
