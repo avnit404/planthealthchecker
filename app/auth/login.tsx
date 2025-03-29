@@ -15,10 +15,30 @@ export default function LoginScreen() {
   const handleLogin = async () => {
     try {
       setError('');
+      if (!email || !password) {
+        setError('Please enter both email and password');
+        return;
+      }
       await signInWithEmailAndPassword(auth, email, password);
       router.replace('/(tabs)');
     } catch (error: any) {
-      setError(error.message);
+      const errorCode = error.code;
+      switch (errorCode) {
+        case 'auth/invalid-email':
+          setError('Please enter a valid email address');
+          break;
+        case 'auth/user-not-found':
+          setError('No account found with this email');
+          break;
+        case 'auth/wrong-password':
+          setError('Incorrect password');
+          break;
+        case 'auth/invalid-credential':
+          setError('Invalid email or password');
+          break;
+        default:
+          setError('Failed to login. Please try again');
+      }
     }
   };
 

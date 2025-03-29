@@ -15,10 +15,31 @@ export default function RegisterScreen() {
   const handleRegister = async () => {
     try {
       setError('');
+      if (!email || !password) {
+        setError('Please enter both email and password');
+        return;
+      }
+      if (password.length < 6) {
+        setError('Password must be at least 6 characters long');
+        return;
+      }
       await createUserWithEmailAndPassword(auth, email, password);
       router.replace('/(tabs)');
     } catch (error: any) {
-      setError(error.message);
+      const errorCode = error.code;
+      switch (errorCode) {
+        case 'auth/email-already-in-use':
+          setError('An account already exists with this email');
+          break;
+        case 'auth/invalid-email':
+          setError('Please enter a valid email address');
+          break;
+        case 'auth/weak-password':
+          setError('Password is too weak');
+          break;
+        default:
+          setError('Failed to create account. Please try again');
+      }
     }
   };
 
