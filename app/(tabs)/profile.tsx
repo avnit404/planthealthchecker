@@ -146,7 +146,7 @@ export default function ProfileScreen() {
               <MaterialCommunityIcons
                 name="star-circle"
                 size={24}
-                color="#4CAF50"
+                color="#945034"
               />
               <ThemedText style={styles.subscriptionTitle}>
                 Free Plan
@@ -178,7 +178,7 @@ export default function ProfileScreen() {
                 <MaterialCommunityIcons
                   name="crown"
                   size={30}
-                  color="#4CAF50"
+                  color="#945034"
                 />
                 <View>
                   <ThemedText style={styles.upgradeTitle}>
@@ -200,7 +200,7 @@ export default function ProfileScreen() {
                 <MaterialCommunityIcons
                   name="logout"
                   size={24}
-                  color="#f44336"
+                  color="#fff"
                 />
                 <ThemedText style={styles.logoutText}>Logout</ThemedText>
               </TouchableOpacity>
@@ -212,7 +212,7 @@ export default function ProfileScreen() {
                 <MaterialCommunityIcons
                   name="account-remove"
                   size={24}
-                  color="#d32f2f"
+                  color="#fff"
                 />
                 <ThemedText style={[styles.logoutText, styles.deleteText]}>
                   Delete Account
@@ -328,35 +328,51 @@ const styles = StyleSheet.create({
     fontSize: 24,
     fontWeight: "bold",
     marginTop: 10,
-    color: "#FFF",
+    color: "#945034",
   },
   infoSection: {
     gap: 20,
   },
   subscriptionCard: {
-    backgroundColor: "#A08963",
-    borderRadius: 15,
+    backgroundColor: "#ffffff",
+    borderRadius: 12,
     padding: 20,
     alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
   subscriptionTitle: {
     fontSize: 20,
     fontWeight: "bold",
     marginTop: 10,
-    color: "#FFF",
+    color: "#945034",
   },
   subscriptionDetails: {
     opacity: 0.9,
     marginTop: 5,
-    color: "#FFF",
+    color: "#666",
   },
   upgradeCard: {
-    backgroundColor: "#A08963",
-    borderRadius: 15,
+    backgroundColor: "#ffffff",
+    borderRadius: 12,
     padding: 20,
     flexDirection: "row",
     alignItems: "center",
     gap: 15,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
   },
   upgradeTitle: {
     fontSize: 18,
@@ -369,18 +385,26 @@ const styles = StyleSheet.create({
     color: "#333",
   },
   logoutButton: {
-    backgroundColor: "#7D0A0A",
-    borderRadius: 15,
+    backgroundColor: "#945034",
+    borderRadius: 12,
     padding: 15,
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
     gap: 10,
     marginTop: 10,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 4,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 6,
+    elevation: 5,
   },
   logoutText: {
     fontSize: 16,
-    color: "#FFF",
+    color: "#fff",
   },
   // Modal styles
   modalContainer: {
