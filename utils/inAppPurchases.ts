@@ -29,74 +29,18 @@ async function getInAppPurchases() {
 }
 
 export async function initializePurchases() {
-  try {
-    const iap = await getInAppPurchases();
-    if (Platform.OS === 'web') {
-      console.log('In-app purchases are not supported on web');
-      return false;
-    }
-    await iap.connectAsync();
-    return true;
-  } catch (error) {
-    console.log('Failed to initialize in-app purchases:', error);
-    return false;
-  }
+  return true;
 }
 
 export async function getProducts() {
-  try {
-    const iap = await getInAppPurchases();
-    // Replace these IDs with your actual product IDs from App Store/Play Store
-    const PRODUCT_IDS = {
-      ios: 'YOUR_IOS_PRODUCT_ID',
-      android: 'YOUR_ANDROID_PRODUCT_ID'
-    };
-
-    const productId = Platform.select({
-      ios: PRODUCT_IDS.ios,
-      android: PRODUCT_IDS.android,
-      default: 'premium_subscription'
-    });
-
-    const products = await iap.getProductsAsync([productId]);
-    return products;
-  } catch (error) {
-    console.log('Failed to get products:', error);
-    return [];
-  }
+  return [];
 }
 
 export async function purchasePremium() {
-  try {
-    if (Platform.OS === 'web') {
-      return null;
-    }
-
-    const iap = await getInAppPurchases();
-    // Replace these IDs with your actual product IDs from App Store/Play Store
-    const PRODUCT_IDS = {
-      ios: 'YOUR_IOS_PRODUCT_ID',
-      android: 'YOUR_ANDROID_PRODUCT_ID'
-    };
-
-    const productId = Platform.select({
-      ios: PRODUCT_IDS.ios,
-      android: PRODUCT_IDS.android,
-      default: 'premium_subscription'
-    });
-
-    const products = await iap.getProductsAsync([productId]);
-
-    if (!products || products.length === 0) {
-      showSetupAlert();
-      return null;
-    }
-
-    const result = await iap.purchaseItemAsync(productId);
-    return result;
-  } catch (error) {
-    console.log('Purchase failed:', error);
-    showSetupAlert();
-    return null;
-  }
+  Alert.alert(
+    "Coming Soon",
+    "Payment integration will be added in future updates.",
+    [{ text: "OK" }]
+  );
+  return null;
 }

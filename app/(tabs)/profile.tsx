@@ -187,29 +187,10 @@ export default function ProfileScreen() {
             >
               <TouchableOpacity
                 onPress={async () => {
-                  if (Platform.OS === "web") {
-                    showMessageModal(
-                      "Not Available",
-                      "In-app purchases are only available on iOS and Android devices"
-                    );
-                    return;
-                  }
-                  try {
-                    const initialized = await initializePurchases();
-                    if (!initialized) {
-                      showMessageModal("Error", "Failed to initialize in-app purchases");
-                      return;
-                    }
-                    const purchase = await purchasePremium();
-                    if (purchase) {
-                      showMessageModal("Success", "Premium plan activated!");
-                    } else {
-                      showMessageModal("Error", "Failed to process payment. Please try again.");
-                    }
-                  } catch (error) {
-                    console.error("Error processing purchase:", error);
-                    showMessageModal("Error", "An unexpected error occurred");
-                  }
+                  showMessageModal(
+                    "Coming Soon",
+                    "Payment integration will be added in future updates."
+                  );
                 }}
                 style={styles.upgradeButton}
               >
