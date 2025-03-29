@@ -124,15 +124,17 @@ export default function PlantHealthScreen() {
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <ThemedView style={styles.wrapper}>
+    <ScrollView style={[styles.container, { backgroundColor: '#FFDDAB' }]}>
+      <ThemedView style={[styles.wrapper, { paddingTop: 60 }]}>
         {/* Header */}
-        <View style={styles.header}>
-          <ThemedText style={styles.title}>Plant Health Check</ThemedText>
-          <ThemedText style={styles.subtitle}>
+        <Animated.View entering={FadeInDown} style={styles.header}>
+          <ThemedText style={[styles.title, { color: '#945034', fontSize: 32, fontWeight: 'bold' }]}>
+            Plant Health Check
+          </ThemedText>
+          <ThemedText style={[styles.subtitle, { color: '#666', marginTop: 8 }]}>
             Upload a photo to check plant health
           </ThemedText>
-        </View>
+        </Animated.View>
 
         {/* Main Content */}
         <View style={styles.main}>

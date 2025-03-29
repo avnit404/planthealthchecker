@@ -40,25 +40,31 @@ export default function TabLayout() {
       screenOptions={{
         // Tint colors (for fallback; our AnimatedTabIcon overrides the focused state)
         tabBarActiveTintColor: "#FFFFFF",
-        tabBarInactiveTintColor: "rgba(255,255,255,0.7)",
+        tabBarInactiveTintColor: "rgba(255,255,255,0.5)",
         headerShown: false,
         tabBarButton: HapticTab,
         tabBarBackground: TabBarBackground,
-        tabBarShowLabel: false,
+        tabBarShowLabel: true,
+        tabBarLabelStyle: {
+          fontSize: 12,
+          fontWeight: '500',
+        },
         tabBarStyle: Platform.select({
           ios: {
             position: "absolute",
-            backgroundColor: "#228B22", // forest green background
+            backgroundColor: "#945034",
             borderTopWidth: 0,
             elevation: 0,
-            height: 60,
-            borderRadius: 20,
-            marginHorizontal: 10,
-            marginBottom: 10,
+            height: 70,
+            borderRadius: 25,
+            marginHorizontal: 16,
+            marginBottom: 20,
+            paddingBottom: 10,
+            paddingTop: 10,
             shadowColor: "#000",
-            shadowOffset: { width: 0, height: 2 },
-            shadowOpacity: 0.1,
-            shadowRadius: 4,
+            shadowOffset: { width: 0, height: 4 },
+            shadowOpacity: 0.15,
+            shadowRadius: 8,
           },
           default: {
             backgroundColor: "#228B22",

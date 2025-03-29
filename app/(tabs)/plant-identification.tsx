@@ -160,9 +160,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFDDAB',
   },
   content: {
-    flex: 1,
     padding: 20,
-    backgroundColor:"#FFDDAB",
+    paddingTop: 40,
   },
   confidentBar: {
     height: 6,
@@ -206,7 +205,7 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   header: {
-    marginBottom: 24,
+    marginBottom: 30,
     alignItems: 'center',
   },
   title: {
