@@ -1,7 +1,15 @@
 
-import { Platform } from 'react-native';
+import { Platform, Alert } from 'react-native';
 
 let InAppPurchases: any;
+
+const showSetupAlert = () => {
+  Alert.alert(
+    "Setup Required",
+    "In-app purchases require proper configuration in App Store/Play Store. Please ensure you have set up the necessary credentials.",
+    [{ text: "OK" }]
+  );
+};
 
 // For web, mock the implementation
 const webMock = {
@@ -49,11 +57,23 @@ export async function getProducts() {
 
 export async function purchasePremium() {
   try {
+    if (Platform.OS === 'web') {
+      return null;
+    }
+    
     const iap = await getInAppPurchases();
+    const products = await iap.getProductsAsync(['premium_subscription']);
+    
+    if (!products || products.length === 0) {
+      showSetupAlert();
+      return null;
+    }
+    
     const result = await iap.purchaseItemAsync('premium_subscription');
     return result;
   } catch (error) {
     console.log('Purchase failed:', error);
+    showSetupAlert();
     return null;
   }
 }
