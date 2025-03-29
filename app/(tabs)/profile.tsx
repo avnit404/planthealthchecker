@@ -312,22 +312,21 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    paddingTop: 60,
     backgroundColor: "#FFDDAB",
   },
   profileCard: {
     backgroundColor: "#ffffff",
     borderRadius: 25,
-    padding: 24,
+    padding: 20,
     marginTop: 20,
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
-      height: 8,
+      height: 4,
     },
-    shadowOpacity: 0.15,
-    shadowRadius: 16,
-    elevation: 8,
+    shadowOpacity: 0.1,
+    shadowRadius: 12,
+    elevation: 5,
   },
   avatarContainer: {
     alignItems: "center",
