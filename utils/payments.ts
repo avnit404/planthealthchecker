@@ -3,8 +3,8 @@ import { Platform } from 'react-native';
 import * as InAppPurchases from 'expo-in-app-purchases';
 import { initStripe, presentPaymentSheet } from '@stripe/stripe-react-native';
 
-const STRIPE_PUBLISHABLE_KEY = 'YOUR_STRIPE_PUBLISHABLE_KEY';
-const IOS_PREMIUM_PLAN_ID = 'YOUR_IOS_PRODUCT_ID';
+const STRIPE_PUBLISHABLE_KEY = 'pk_test_51OoJDASHG5JIxxLCBWUfxSrF5v4Y9fYD8ZQ7tLNX3Z9XJsJKL2Q3M'; // Replace with your actual Stripe key
+const IOS_PREMIUM_PLAN_ID = 'com.yourapp.premium'; // Replace with your actual iOS product ID
 
 export const initializePayments = async () => {
   if (Platform.OS === 'ios') {
@@ -38,7 +38,7 @@ export const purchasePremium = async () => {
   } else {
     try {
       // Fetch payment intent from your backend
-      const response = await fetch('YOUR_BACKEND_URL/create-payment-intent', {
+      const response = await fetch('https://your-replit-backend.repl.co/create-payment-intent', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ amount: 999, currency: 'usd' }) // $9.99

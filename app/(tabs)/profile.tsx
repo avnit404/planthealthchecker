@@ -21,6 +21,7 @@ import { router } from "expo-router";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import Animated, { ZoomIn } from "react-native-reanimated";
+import { initializePayments, purchasePremium } from "../../utils/payments";
 
 const { width } = Dimensions.get("window");
 
