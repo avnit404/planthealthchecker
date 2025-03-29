@@ -188,25 +188,27 @@ const styles = StyleSheet.create({
   },
   wrapper: {
     flex: 1,
-    padding: 20,
+    padding: Platform.select({ ios: 20, android: 16, default: 20 }),
     backgroundColor:"#FFDDAB",
   },
   header: {
-    paddingVertical: 20,
+    paddingVertical: Platform.select({ ios: 20, android: 16, default: 20 }),
     borderBottomWidth: 1,
     borderBottomColor: '#ccc',
-    marginBottom: 20,
+    marginBottom: Platform.select({ ios: 20, android: 16, default: 20 }),
     alignItems: 'center',
   },
   title: {
-    fontSize: 28,
+    fontSize: Platform.select({ ios: 28, android: 24, default: 28 }),
     fontWeight: '700',
     color: '#945034',
-    marginBottom: 10,
+    marginBottom: Platform.select({ ios: 10, android: 8, default: 10 }),
+    textAlign: 'center',
   },
   subtitle: {
-    fontSize: 16,
+    fontSize: Platform.select({ ios: 16, android: 14, default: 16 }),
     color: '#945034',
+    textAlign: 'center',
   },
   main: {
     flex: 1,
