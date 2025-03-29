@@ -9,7 +9,7 @@ localPort = 8081
 externalPort = 80
 
 [workflows]
-runButton = "Dev Server"
+runButton = "EAS Publish Preview Android"
 
 [[workflows.workflow]]
 name = "Dev Server"
