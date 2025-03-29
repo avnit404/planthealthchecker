@@ -1,5 +1,21 @@
+
 import { Platform } from 'react-native';
-import * as InAppPurchases from 'expo-in-app-purchases';
+
+// Mock implementation for web
+const webMock = {
+  connectAsync: async () => false,
+  getProductsAsync: async () => [],
+  purchaseItemAsync: async () => null
+};
+
+let InAppPurchases;
+
+// Use real module for native platforms, mock for web
+if (Platform.OS === 'web') {
+  InAppPurchases = webMock;
+} else {
+  InAppPurchases = require('expo-in-app-purchases');
+}
 
 export async function initializePurchases() {
   try {
