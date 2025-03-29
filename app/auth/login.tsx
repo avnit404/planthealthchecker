@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { View, StyleSheet, TouchableOpacity, TextInput, Platform } from 'react-native';
 import { signInWithEmailAndPassword } from 'firebase/auth';
@@ -27,9 +26,13 @@ export default function LoginScreen() {
     <ThemedView style={styles.container}>
       <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
       <ThemedText type="title" style={styles.title}>Welcome Back</ThemedText>
-      
-      {error ? <ThemedText style={styles.error}>{error}</ThemedText> : null}
-      
+
+      {error ? (
+        <View style={styles.errorContainer}>
+          <ThemedText style={styles.error}>{error}</ThemedText>
+        </View>
+      ) : null}
+
       <TextInput
         placeholder="Email"
         value={email}
@@ -39,7 +42,7 @@ export default function LoginScreen() {
         autoCapitalize="none"
         placeholderTextColor="#666"
       />
-      
+
       <TextInput
         placeholder="Password"
         value={password}
@@ -48,11 +51,11 @@ export default function LoginScreen() {
         style={styles.input}
         placeholderTextColor="#666"
       />
-      
+
       <TouchableOpacity onPress={handleLogin} style={styles.button}>
         <ThemedText style={styles.buttonText}>Login</ThemedText>
       </TouchableOpacity>
-      
+
       <TouchableOpacity onPress={() => router.push('/auth/register')}>
         <ThemedText style={styles.link}>Don't have an account? Register</ThemedText>
       </TouchableOpacity>
@@ -95,9 +98,17 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#4CAF50',
   },
-  error: {
-    color: '#ff3b30',
-    textAlign: 'center',
+  errorContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#ffebee',
+    padding: 12,
+    borderRadius: 8,
     marginBottom: 16,
+  },
+  error: {
+    color: '#d32f2f',
+    marginLeft: 8,
+    flex: 1,
   }
 });

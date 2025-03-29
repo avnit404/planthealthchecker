@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { View, StyleSheet, TouchableOpacity, TextInput, Platform } from 'react-native';
 import { createUserWithEmailAndPassword } from 'firebase/auth';
@@ -27,9 +26,14 @@ export default function RegisterScreen() {
     <ThemedView style={styles.container}>
       <StatusBar style={Platform.OS === 'ios' ? 'light' : 'auto'} />
       <ThemedText type="title" style={styles.title}>Create Account</ThemedText>
-      
-      {error ? <ThemedText style={styles.error}>{error}</ThemedText> : null}
-      
+
+      {error ? (
+        <View style={styles.errorContainer}>
+          <View style={styles.errorIcon}>{/* Add an icon here if desired */}</View>
+          <ThemedText style={styles.error}>{error}</ThemedText>
+        </View>
+      ) : null}
+
       <TextInput
         placeholder="Email"
         value={email}
@@ -39,7 +43,7 @@ export default function RegisterScreen() {
         autoCapitalize="none"
         placeholderTextColor="#666"
       />
-      
+
       <TextInput
         placeholder="Password"
         value={password}
@@ -48,11 +52,11 @@ export default function RegisterScreen() {
         style={styles.input}
         placeholderTextColor="#666"
       />
-      
+
       <TouchableOpacity onPress={handleRegister} style={styles.button}>
         <ThemedText style={styles.buttonText}>Register</ThemedText>
       </TouchableOpacity>
-      
+
       <TouchableOpacity onPress={() => router.push('/auth/login')}>
         <ThemedText style={styles.link}>Already have an account? Login</ThemedText>
       </TouchableOpacity>
@@ -95,9 +99,20 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     color: '#4CAF50',
   },
-  error: {
-    color: '#ff3b30',
-    textAlign: 'center',
+  errorContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#ffebee',
+    padding: 12,
+    borderRadius: 8,
     marginBottom: 16,
+  },
+  error: {
+    color: '#d32f2f',
+    marginLeft: 8,
+    flex: 1,
+  },
+  errorIcon: {
+    // Add styling for error icon here if needed
   }
 });
