@@ -232,7 +232,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     backgroundColor: '#ffffff',
     marginBottom: 24,
-    width: width - 48,
+    width: "100%",
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
