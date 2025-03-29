@@ -157,6 +157,7 @@ export default function PlantIdentificationScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginTop: 20,
     backgroundColor: '#FFDDAB',
   },
   content: {
