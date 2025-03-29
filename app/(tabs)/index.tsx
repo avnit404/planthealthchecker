@@ -7,7 +7,8 @@ import {
   Dimensions, 
   ActivityIndicator, 
   View, 
-  Alert 
+  Alert,
+  Platform
 } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { ThemedText } from '@/components/ThemedText';

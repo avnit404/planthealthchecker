@@ -1,25 +1,13 @@
-
 import { Platform } from 'react-native';
 import * as InAppPurchases from 'expo-in-app-purchases';
 
-const PREMIUM_PLAN_ID = 'YOUR_PRODUCT_ID';
-
-const isNativePlatform = Platform.OS === 'ios' || Platform.OS === 'android';
-
 export async function initializePurchases() {
   try {
-    if (!isNativePlatform) {
-      console.log('In-app purchases are only available on iOS and Android');
+    if (Platform.OS === 'web') {
+      console.log('In-app purchases are not supported on web');
       return false;
     }
-    
-    if (Platform.OS === 'ios') {
-      // iOS-specific initialization
-      await InAppPurchases.connectAsync();
-    } else if (Platform.OS === 'android') {
-      // Android-specific initialization using Stripe
-      await InAppPurchases.connectAsync();
-    }
+    await InAppPurchases.connectAsync();
     return true;
   } catch (error) {
     console.log('Failed to initialize in-app purchases:', error);
@@ -29,14 +17,11 @@ export async function initializePurchases() {
 
 export async function getProducts() {
   try {
-    if (!isNativePlatform) {
+    if (Platform.OS === 'web') {
       return [];
     }
-    const { responseCode, results } = await InAppPurchases.getProductsAsync([PREMIUM_PLAN_ID]);
-    if (responseCode === InAppPurchases.IAPResponseCode.OK) {
-      return results;
-    }
-    return [];
+    const products = await InAppPurchases.getProductsAsync(['premium_subscription']);
+    return products;
   } catch (error) {
     console.log('Failed to get products:', error);
     return [];
@@ -45,15 +30,11 @@ export async function getProducts() {
 
 export async function purchasePremium() {
   try {
-    if (!isNativePlatform) {
-      console.log('In-app purchases are only available on iOS and Android');
+    if (Platform.OS === 'web') {
       return null;
     }
-    const { responseCode, results } = await InAppPurchases.purchaseItemAsync(PREMIUM_PLAN_ID);
-    if (responseCode === InAppPurchases.IAPResponseCode.OK) {
-      return results[0];
-    }
-    return null;
+    const result = await InAppPurchases.purchaseItemAsync('premium_subscription');
+    return result;
   } catch (error) {
     console.log('Purchase failed:', error);
     return null;
