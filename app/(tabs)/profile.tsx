@@ -8,6 +8,7 @@ import {
   Modal,
   TextInput,
   Text,
+  Alert,
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import {
@@ -95,7 +96,23 @@ export default function ProfileScreen() {
       await user.delete();
       router.replace("/auth/register");
     } catch (error: any) {
-      console.log("Error during deletion:", error.message);
+      if (error.code === 'auth/requires-recent-login') {
+        Alert.alert(
+          "Session Expired",
+          "For security reasons, please log out and log back in before deleting your account.",
+          [
+            { text: "OK", onPress: handleLogout }
+          ]
+        );
+      } else {
+        Alert.alert(
+          "Unable to Delete Account", 
+          "There was a problem deleting your account. Please try again later.",
+          [
+            { text: "OK" }
+          ]
+        );
+      }
     }
   };
 
