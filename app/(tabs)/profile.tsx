@@ -8,7 +8,6 @@ import {
   Modal,
   TextInput,
   Text,
-  Alert,
   Platform,
 } from "react-native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -22,7 +21,10 @@ import { router } from "expo-router";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import Animated, { ZoomIn } from "react-native-reanimated";
-import { initializePurchases, purchasePremium } from "../../utils/inAppPurchases"; // Updated import
+import {
+  initializePurchases,
+  purchasePremium,
+} from "../../utils/inAppPurchases";
 
 const { width } = Dimensions.get("window");
 
@@ -36,6 +38,28 @@ export default function ProfileScreen() {
 
   // State for the delete confirmation modal
   const [confirmDeleteModalVisible, setConfirmDeleteModalVisible] = useState(false);
+
+  // State for the custom message modal
+  const [messageModalVisible, setMessageModalVisible] = useState(false);
+  const [messageModalTitle, setMessageModalTitle] = useState("");
+  const [messageModalContent, setMessageModalContent] = useState("");
+  const [messageModalAction, setMessageModalAction] = useState(null);
+
+  // Helper to show custom message modal
+  const showMessageModal = (title, content, action = null) => {
+    setMessageModalTitle(title);
+    setMessageModalContent(content);
+    setMessageModalAction(() => action);
+    setMessageModalVisible(true);
+  };
+
+  // Called when user taps "OK" in the message modal
+  const handleMessageModalOk = () => {
+    setMessageModalVisible(false);
+    if (messageModalAction) {
+      messageModalAction();
+    }
+  };
 
   // Promise-based helper to prompt user for their password
   const promptUserForPassword = () => {
@@ -91,28 +115,23 @@ export default function ProfileScreen() {
     console.log("Deletion initiated");
     setConfirmDeleteModalVisible(false);
     try {
-      // Uncomment the following lines to include password reauthentication before deletion
+      // Reauthenticate before deletion
       const password = await promptUserForPassword();
       const credential = EmailAuthProvider.credential(user.email, password);
       await reauthenticateWithCredential(user, credential);
       await user.delete();
       router.replace("/auth/register");
     } catch (error: any) {
-      if (error.code === 'auth/requires-recent-login') {
-        Alert.alert(
+      if (error.code === "auth/requires-recent-login") {
+        showMessageModal(
           "Session Expired",
           "For security reasons, please log out and log back in before deleting your account.",
-          [
-            { text: "OK", onPress: handleLogout }
-          ]
+          handleLogout
         );
       } else {
-        Alert.alert(
-          "Unable to Delete Account", 
-          "There was a problem deleting your account. Please try again later.",
-          [
-            { text: "OK" }
-          ]
+        showMessageModal(
+          "Unable to Delete Account",
+          "There was a problem deleting your account. Please try again later."
         );
       }
     }
@@ -144,7 +163,10 @@ export default function ProfileScreen() {
 
           <View style={styles.infoSection}>
             {/* Subscription Card */}
-            <Animated.View entering={ZoomIn.duration(200)} style={styles.subscriptionCard}>
+            <Animated.View
+              entering={ZoomIn.duration(200)}
+              style={styles.subscriptionCard}
+            >
               <MaterialCommunityIcons
                 name="star-circle"
                 size={24}
@@ -159,48 +181,34 @@ export default function ProfileScreen() {
             </Animated.View>
 
             {/* Upgrade Card */}
-            <Animated.View entering={ZoomIn.duration(200)} style={styles.upgradeCard}>
+            <Animated.View
+              entering={ZoomIn.duration(200)}
+              style={styles.upgradeCard}
+            >
               <TouchableOpacity
                 onPress={async () => {
-                  if (Platform.OS === 'web') {
-                    Alert.alert(
+                  if (Platform.OS === "web") {
+                    showMessageModal(
                       "Not Available",
-                      "In-app purchases are only available on iOS and Android devices",
-                      [{ text: "OK" }]
+                      "In-app purchases are only available on iOS and Android devices"
                     );
                     return;
                   }
                   try {
                     const initialized = await initializePurchases();
                     if (!initialized) {
-                      Alert.alert(
-                        "Error",
-                        "Failed to initialize in-app purchases",
-                        [{ text: "OK" }]
-                      );
+                      showMessageModal("Error", "Failed to initialize in-app purchases");
                       return;
                     }
                     const purchase = await purchasePremium();
                     if (purchase) {
-                      Alert.alert(
-                        "Success",
-                        "Premium plan activated!",
-                        [{ text: "OK" }]
-                      );
+                      showMessageModal("Success", "Premium plan activated!");
                     } else {
-                      Alert.alert(
-                        "Error",
-                        "Failed to process payment. Please try again.",
-                        [{ text: "OK" }]
-                      );
+                      showMessageModal("Error", "Failed to process payment. Please try again.");
                     }
                   } catch (error) {
                     console.error("Error processing purchase:", error);
-                    Alert.alert(
-                      "Error",
-                      "An unexpected error occurred",
-                      [{ text: "OK" }]
-                    );
+                    showMessageModal("Error", "An unexpected error occurred");
                   }
                 }}
                 style={styles.upgradeButton}
@@ -223,10 +231,7 @@ export default function ProfileScreen() {
 
             {/* Logout & Delete Buttons */}
             <Animated.View entering={ZoomIn.duration(200)}>
-              <TouchableOpacity
-                onPress={handleLogout}
-                style={styles.logoutButton}
-              >
+              <TouchableOpacity onPress={handleLogout} style={styles.logoutButton}>
                 <MaterialCommunityIcons
                   name="logout"
                   size={24}
@@ -316,6 +321,29 @@ export default function ProfileScreen() {
                 style={[styles.modalButton, styles.modalDeleteButton]}
               >
                 <Text style={styles.modalButtonText}>Delete</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+
+      {/* Custom Message Modal */}
+      <Modal
+        visible={messageModalVisible}
+        transparent={true}
+        animationType="fade"
+        onRequestClose={handleMessageModalOk}
+      >
+        <View style={styles.modalContainer}>
+          <View style={styles.modalContent}>
+            <Text style={styles.modalTitle}>{messageModalTitle}</Text>
+            <Text style={styles.modalSubtitle}>{messageModalContent}</Text>
+            <View style={styles.modalButtons}>
+              <TouchableOpacity
+                onPress={handleMessageModalOk}
+                style={[styles.modalButton, styles.modalOkButton]}
+              >
+                <Text style={styles.modalButtonText}>OK</Text>
               </TouchableOpacity>
             </View>
           </View>

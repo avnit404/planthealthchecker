@@ -4,17 +4,13 @@
     "version": ">=15.0.0"
   },
   "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal"
+    },
     "preview": {
-      "workflow": "generic",
-      "env": {
-        "NODE_ENV": "development"
-      },
-      "ios": {
-        "buildConfiguration": "Debug"
-      },
-      "android": {
-        "buildConfiguration": "Debug"
-      }
-    }
+      "distribution": "internal"
+    },
+    "production": {}
   }
 }

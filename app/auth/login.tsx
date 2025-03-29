@@ -160,7 +160,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: "#333",
     borderWidth: 0,
-    outline: "none",
   },
   eyeIcon: {
     marginLeft: 10,

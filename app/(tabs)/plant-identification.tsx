@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ScrollView, Image, TouchableOpacity, StyleSheet, Dimensions, ActivityIndicator, View, Platform } from 'react-native';
+import { ScrollView, Image, TouchableOpacity, StyleSheet, Dimensions, ActivityIndicator, View } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
@@ -161,7 +161,8 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
-    padding: Platform.select({ ios: 20, android: 16, default: 20 }),
+    padding: 20,
+    backgroundColor:"#FFDDAB",
   },
   confidentBar: {
     height: 6,
@@ -205,38 +206,24 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   header: {
-    paddingVertical: Platform.select({ ios: 20, android: 16, default: 20 }),
-    marginBottom: Platform.select({ ios: 20, android: 16, default: 20 }),
+    marginBottom: 24,
     alignItems: 'center',
   },
   title: {
-    fontSize: Platform.select({ ios: 28, android: 24, default: 28 }),
-    fontWeight: '700',
+    fontSize: 32,
+    fontWeight: '800',
+    marginBottom: 8,
     color: '#945034',
-    marginBottom: Platform.select({ ios: 10, android: 8, default: 10 }),
     textAlign: 'center',
   },
   subtitle: {
-    fontSize: Platform.select({ ios: 16, android: 14, default: 16 }),
+    fontSize: 16,
     color: '#945034',
     textAlign: 'center',
+    maxWidth: '80%',
   },
   uploadSection: {
-    backgroundColor: '#ffffff',
-    borderRadius: Platform.select({ ios: 12, android: 10, default: 12 }),
-    padding: Platform.select({ ios: 20, android: 16, default: 20 }),
     alignItems: 'center',
-    width: '100%',
-    maxWidth: 500,
-    alignSelf: 'center',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: Platform.select({ ios: 2, android: 1, default: 2 }),
-    },
-    shadowOpacity: Platform.select({ ios: 0.1, android: 0.05, default: 0.1 }),
-    shadowRadius: Platform.select({ ios: 4, android: 3, default: 4 }),
-    elevation: Platform.select({ ios: 3, android: 2, default: 3 }),
   },
   uploadButton: {
     alignItems: 'center',
